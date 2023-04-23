@@ -5,8 +5,8 @@ using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using TaskManagementSystem.Core.Models;
-using Task = TaskManagementSystem.Core.Models.Task;
+using TaskManagementSystem.Infrastructure.Models;
+using Task = TaskManagementSystem.Infrastructure.Models.Task;
 
 namespace TaskManagementSystem.Infrastructure
 {

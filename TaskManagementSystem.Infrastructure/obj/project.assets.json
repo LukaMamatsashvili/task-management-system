@@ -1143,16 +1143,6 @@
             "rid": "win"
           }
         }
-      },
-      "TaskManagementSystem.Core/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v6.0",
-        "compile": {
-          "bin/placeholder/TaskManagementSystem.Core.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/TaskManagementSystem.Core.dll": {}
-        }
       }
     }
   },
@@ -3473,19 +3463,13 @@
         "useSharedDesignerContext.txt",
         "version.txt"
       ]
-    },
-    "TaskManagementSystem.Core/1.0.0": {
-      "type": "project",
-      "path": "../TaskManagementSystem.Core/TaskManagementSystem.Core.csproj",
-      "msbuildProject": "../TaskManagementSystem.Core/TaskManagementSystem.Core.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net6.0": [
       "Microsoft.EntityFrameworkCore >= 7.0.5",
       "Microsoft.EntityFrameworkCore.Design >= 7.0.5",
-      "Microsoft.EntityFrameworkCore.SqlServer >= 7.0.5",
-      "TaskManagementSystem.Core >= 1.0.0"
+      "Microsoft.EntityFrameworkCore.SqlServer >= 7.0.5"
     ]
   },
   "packageFolders": {
@@ -3514,11 +3498,7 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
-          "projectReferences": {
-            "E:\\Desktop 2023\\Development\\Job opportunities\\11. Digital Settings\\TaskManagementSystem\\TaskManagementSystem.Core\\TaskManagementSystem.Core.csproj": {
-              "projectPath": "E:\\Desktop 2023\\Development\\Job opportunities\\11. Digital Settings\\TaskManagementSystem\\TaskManagementSystem.Core\\TaskManagementSystem.Core.csproj"
-            }
-          }
+          "projectReferences": {}
         }
       },
       "warningProperties": {

@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskManagementSystem.Core.Models
+namespace TaskManagementSystem.Infrastructure.Models
 {
-    public class Permission
+    public class User
     {
         public int Id { get; set; }
-        public string Type { get; set; }
+        public int UserRoleId { get; set; }
+        public string Username { get; set; }
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskManagementSystem.Core.Models
+namespace TaskManagementSystem.Infrastructure.Models
 {
     public class Task
     {
