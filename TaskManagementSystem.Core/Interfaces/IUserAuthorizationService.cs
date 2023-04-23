@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TaskManagementSystem.Core.Interfaces
 {
-    internal interface IUserAuthorizationService
+    public interface IUserAuthorizationService
     {
     }
 }

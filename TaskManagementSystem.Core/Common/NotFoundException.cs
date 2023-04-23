@@ -3,7 +3,7 @@
 namespace TaskManagementSystem.Core.Common
 {
     [Serializable]
-    internal class NotFoundException : Exception
+    public class NotFoundException : Exception
     {
         public NotFoundException()
         {

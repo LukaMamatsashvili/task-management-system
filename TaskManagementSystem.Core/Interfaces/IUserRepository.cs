@@ -12,6 +12,7 @@ namespace TaskManagementSystem.Core.Interfaces
     {
         Task<List<User>> GetUsersAsync();
         Task<User> GetUserByIdAsync(int id);
+        Task<User> GetUserByUsernameAsync(string username);
         Task<int> AddUserAsync(User User);
         Task UpdateUserAsync(User User);
         Task DeleteUserAsync(int id);
