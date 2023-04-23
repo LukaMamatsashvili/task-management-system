@@ -38,6 +38,18 @@ namespace TaskManagementSystem.Core.DataAccess
             return User;
         }
 
+        public async Task<User> GetUserByUsernameAsync(string username)
+        {
+            var User = await _context.Users.FirstOrDefaultAsync(t => t.Username == username);
+
+            if (User == null)
+            {
+                throw new NotFoundException($"User with UserName '{username}' not found.");
+            }
+
+            return User;
+        }
+
         public async Task<int> AddUserAsync(User User)
         {
             await _context.Users.AddAsync(User);
