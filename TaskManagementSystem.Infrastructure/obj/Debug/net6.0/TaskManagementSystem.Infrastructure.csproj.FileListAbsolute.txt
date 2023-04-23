@@ -2,14 +2,11 @@ E:\Desktop 2023\Development\Job opportunities\11. Digital Settings\TaskManagemen
 E:\Desktop 2023\Development\Job opportunities\11. Digital Settings\TaskManagementSystem\TaskManagementSystem.Infrastructure\bin\Debug\net6.0\TaskManagementSystem.Infrastructure.runtimeconfig.json
 E:\Desktop 2023\Development\Job opportunities\11. Digital Settings\TaskManagementSystem\TaskManagementSystem.Infrastructure\bin\Debug\net6.0\TaskManagementSystem.Infrastructure.dll
 E:\Desktop 2023\Development\Job opportunities\11. Digital Settings\TaskManagementSystem\TaskManagementSystem.Infrastructure\bin\Debug\net6.0\TaskManagementSystem.Infrastructure.pdb
-E:\Desktop 2023\Development\Job opportunities\11. Digital Settings\TaskManagementSystem\TaskManagementSystem.Infrastructure\bin\Debug\net6.0\TaskManagementSystem.Core.dll
-E:\Desktop 2023\Development\Job opportunities\11. Digital Settings\TaskManagementSystem\TaskManagementSystem.Infrastructure\bin\Debug\net6.0\TaskManagementSystem.Core.pdb
 E:\Desktop 2023\Development\Job opportunities\11. Digital Settings\TaskManagementSystem\TaskManagementSystem.Infrastructure\obj\Debug\net6.0\TaskManagementSystem.Infrastructure.csproj.AssemblyReference.cache
 E:\Desktop 2023\Development\Job opportunities\11. Digital Settings\TaskManagementSystem\TaskManagementSystem.Infrastructure\obj\Debug\net6.0\TaskManagementSystem.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
 E:\Desktop 2023\Development\Job opportunities\11. Digital Settings\TaskManagementSystem\TaskManagementSystem.Infrastructure\obj\Debug\net6.0\TaskManagementSystem.Infrastructure.AssemblyInfoInputs.cache
 E:\Desktop 2023\Development\Job opportunities\11. Digital Settings\TaskManagementSystem\TaskManagementSystem.Infrastructure\obj\Debug\net6.0\TaskManagementSystem.Infrastructure.AssemblyInfo.cs
 E:\Desktop 2023\Development\Job opportunities\11. Digital Settings\TaskManagementSystem\TaskManagementSystem.Infrastructure\obj\Debug\net6.0\TaskManagementSystem.Infrastructure.csproj.CoreCompileInputs.cache
-E:\Desktop 2023\Development\Job opportunities\11. Digital Settings\TaskManagementSystem\TaskManagementSystem.Infrastructure\obj\Debug\net6.0\TaskManagementSystem.Infrastructure.csproj.CopyComplete
 E:\Desktop 2023\Development\Job opportunities\11. Digital Settings\TaskManagementSystem\TaskManagementSystem.Infrastructure\obj\Debug\net6.0\TaskManagementSystem.Infrastructure.dll
 E:\Desktop 2023\Development\Job opportunities\11. Digital Settings\TaskManagementSystem\TaskManagementSystem.Infrastructure\obj\Debug\net6.0\refint\TaskManagementSystem.Infrastructure.dll
 E:\Desktop 2023\Development\Job opportunities\11. Digital Settings\TaskManagementSystem\TaskManagementSystem.Infrastructure\obj\Debug\net6.0\TaskManagementSystem.Infrastructure.pdb

@@ -3,10 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManagementSystem.Infrastructure.Models;
+using Task = System.Threading.Tasks.Task;
 
 namespace TaskManagementSystem.Core.Interfaces
 {
-    public class IUserRepository
+    public interface IUserRepository
     {
+        Task<List<User>> GetUsersAsync();
+        Task<User> GetUserByIdAsync(int id);
+        Task<int> AddUserAsync(User User);
+        Task UpdateUserAsync(User User);
+        Task DeleteUserAsync(int id);
     }
 }
