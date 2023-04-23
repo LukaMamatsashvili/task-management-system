@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TaskManagementSystem.Core.Interfaces
 {
-    public class ITaskService
+    public interface ITaskService
     {
     }
 }
