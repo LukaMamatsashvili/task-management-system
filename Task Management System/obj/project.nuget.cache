@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "TCGsINEqAhqzjwvNAxCHZlqevsYX7z87iv18qvppZDdinEGnyxGHifngMeh2iTa2lo+pwnEdPnTW8r8chzMVcw==",
+  "success": true,
+  "projectFilePath": "E:\\Desktop 2023\\Development\\Job opportunities\\11. Digital Settings\\TaskManagementSystem\\Task Management System\\Task Management System.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\lukam\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
+    "C:\\Users\\lukam\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\lukam\\.nuget\\packages\\swashbuckle.aspnetcore\\6.2.3\\swashbuckle.aspnetcore.6.2.3.nupkg.sha512",
+    "C:\\Users\\lukam\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.2.3\\swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",
+    "C:\\Users\\lukam\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.2.3\\swashbuckle.aspnetcore.swaggergen.6.2.3.nupkg.sha512",
+    "C:\\Users\\lukam\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.2.3\\swashbuckle.aspnetcore.swaggerui.6.2.3.nupkg.sha512"
+  ],
+  "logs": []
+}
