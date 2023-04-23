@@ -1,6 +1,6 @@
-﻿namespace Task_Management_System.DTOs
+﻿namespace TaskManagementSystem.Core.DTOs
 {
-    public class PermissionDTO
+    public class UserRoleDTO
     {
         public int Id { get; set; }
         public string Type { get; set; }

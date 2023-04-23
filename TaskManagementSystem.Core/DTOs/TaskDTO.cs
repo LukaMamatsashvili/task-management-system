@@ -1,4 +1,4 @@
-﻿namespace Task_Management_System.DTOs
+﻿namespace TaskManagementSystem.Core.DTOs
 {
     public class TaskDTO
     {
