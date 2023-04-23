@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TaskManagementSystem.Core.Models
+﻿namespace Task_Management_System.DTOs
 {
-    public class Task
+    public class TaskDTO
     {
         public int Id { get; set; }
         public int AssignedUserId { get; set; }
@@ -14,5 +8,6 @@ namespace TaskManagementSystem.Core.Models
         public string Title { get; set; }
         public string? ShortDescription { get; set; }
         public string? Description { get; set; }
+        public List<TaskAttachmentDTO>? AttachedFiles { get; set; }
     }
 }

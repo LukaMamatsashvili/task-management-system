@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace TaskManagementSystem.Core.Models
 {
-    public class Permission
+    public class UserPermissionLink
     {
         public int Id { get; set; }
-        public string Type { get; set; }
+        public int UserId { get; set; }
+        public int PermissionId { get; set; }
     }
 }

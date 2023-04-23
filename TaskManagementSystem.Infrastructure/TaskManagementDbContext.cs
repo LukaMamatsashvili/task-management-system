@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using TaskManagementSystem.Core.Models;
+using Task = TaskManagementSystem.Core.Models.Task;
 
 namespace TaskManagementSystem.Infrastructure
 {
@@ -13,20 +16,19 @@ namespace TaskManagementSystem.Infrastructure
             : base(options)
         {
         }
-
-        public DbSet<Task> Tasks { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            base.OnModelCreating(modelBuilder);
-
-            // Configure the Task entity
-            modelBuilder.Entity<Task>(entity =>
+            if (!optionsBuilder.IsConfigured)
             {
-                entity.HasKey(e => e.Id);
-                entity.Property(e => e.Title).IsRequired();
-                // add other properties here
-            });
+                optionsBuilder.UseSqlServer("Server=DESKTOP-V34LAC9;Database=TaskManagementSystemDB;Trusted_Connection=True;");
+            }
         }
+
+        public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<UserPermissionLink> UserPermissionLinks { get; set; }
+        public DbSet<Task> Tasks { get; set; }
+        public DbSet<TaskAttachment> TaskAttachments { get; set; }
     }
 }

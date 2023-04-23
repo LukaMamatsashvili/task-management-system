@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace TaskManagementSystem.Core.Models
 {
-    internal class User
+    public class User
     {
         public int Id { get; set; }
+        public int UserRoleId { get; set; }
         public string Username { get; set; }
-        public UserRole UserRole { get; set; }
         public List<Permission> Permissions { get; set; }
     }
 }
