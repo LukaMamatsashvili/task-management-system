@@ -12,6 +12,9 @@ namespace TaskManagementSystem.Infrastructure
 {
     public class TaskManagementDbContext : DbContext
     {
+        public TaskManagementDbContext()
+        {
+        }
         public TaskManagementDbContext(DbContextOptions<TaskManagementDbContext> options)
             : base(options)
         {
@@ -20,7 +23,7 @@ namespace TaskManagementSystem.Infrastructure
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=DESKTOP-V34LAC9;Database=TaskManagementSystemDB;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=DESKTOP-V34LAC9;Database=TaskManagementSystemDB;Trusted_Connection=True;TrustServerCertificate=true");
             }
         }
 

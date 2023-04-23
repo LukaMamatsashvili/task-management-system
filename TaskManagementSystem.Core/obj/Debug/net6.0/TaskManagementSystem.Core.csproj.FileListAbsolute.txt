@@ -1,0 +1,12 @@
+E:\Desktop 2023\Development\Job opportunities\11. Digital Settings\TaskManagementSystem\TaskManagementSystem.Core\bin\Debug\net6.0\TaskManagementSystem.Core.deps.json
+E:\Desktop 2023\Development\Job opportunities\11. Digital Settings\TaskManagementSystem\TaskManagementSystem.Core\bin\Debug\net6.0\TaskManagementSystem.Core.dll
+E:\Desktop 2023\Development\Job opportunities\11. Digital Settings\TaskManagementSystem\TaskManagementSystem.Core\bin\Debug\net6.0\TaskManagementSystem.Core.pdb
+E:\Desktop 2023\Development\Job opportunities\11. Digital Settings\TaskManagementSystem\TaskManagementSystem.Core\obj\Debug\net6.0\TaskManagementSystem.Core.csproj.AssemblyReference.cache
+E:\Desktop 2023\Development\Job opportunities\11. Digital Settings\TaskManagementSystem\TaskManagementSystem.Core\obj\Debug\net6.0\TaskManagementSystem.Core.GeneratedMSBuildEditorConfig.editorconfig
+E:\Desktop 2023\Development\Job opportunities\11. Digital Settings\TaskManagementSystem\TaskManagementSystem.Core\obj\Debug\net6.0\TaskManagementSystem.Core.AssemblyInfoInputs.cache
+E:\Desktop 2023\Development\Job opportunities\11. Digital Settings\TaskManagementSystem\TaskManagementSystem.Core\obj\Debug\net6.0\TaskManagementSystem.Core.AssemblyInfo.cs
+E:\Desktop 2023\Development\Job opportunities\11. Digital Settings\TaskManagementSystem\TaskManagementSystem.Core\obj\Debug\net6.0\TaskManagementSystem.Core.csproj.CoreCompileInputs.cache
+E:\Desktop 2023\Development\Job opportunities\11. Digital Settings\TaskManagementSystem\TaskManagementSystem.Core\obj\Debug\net6.0\TaskManagementSystem.Core.dll
+E:\Desktop 2023\Development\Job opportunities\11. Digital Settings\TaskManagementSystem\TaskManagementSystem.Core\obj\Debug\net6.0\refint\TaskManagementSystem.Core.dll
+E:\Desktop 2023\Development\Job opportunities\11. Digital Settings\TaskManagementSystem\TaskManagementSystem.Core\obj\Debug\net6.0\TaskManagementSystem.Core.pdb
+E:\Desktop 2023\Development\Job opportunities\11. Digital Settings\TaskManagementSystem\TaskManagementSystem.Core\obj\Debug\net6.0\ref\TaskManagementSystem.Core.dll
