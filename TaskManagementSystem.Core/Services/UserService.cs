@@ -66,7 +66,6 @@ namespace TaskManagementSystem.Core.Services
                 Id = User.Id,
                 UserRole = await _userRoleService.GetUserRoleById(User.Id),
                 Username = User.Username,
-                //Password = 
             };
             UserDTO.Permissions = await GetPermissionsByUserId(User.Id);
 
@@ -85,7 +84,6 @@ namespace TaskManagementSystem.Core.Services
                 Id = User.Id,
                 UserRole = await _userRoleService.GetUserRoleById(User.Id),
                 Username = User.Username,
-                //Password = 
             };
             UserDTO.Permissions = await GetPermissionsByUserId(User.Id);
 
