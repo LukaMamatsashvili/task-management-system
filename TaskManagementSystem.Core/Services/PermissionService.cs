@@ -15,16 +15,16 @@ namespace TaskManagementSystem.Core.Services
 {
     public class PermissionService : IPermissionService
     {
-        private readonly IPermissionRepository _PermissionRepository;
+        private readonly IPermissionRepository _permissionRepository;
 
-        public PermissionService(IPermissionRepository PermissionRepository)
+        public PermissionService(IPermissionRepository permissionRepository)
         {
-            _PermissionRepository = PermissionRepository;
+            _permissionRepository = permissionRepository;
         }
 
         public async Task<List<PermissionDTO>> GetPermissions()
         {
-            var Permissions = await _PermissionRepository.GetPermissionsAsync();
+            var Permissions = await _permissionRepository.GetPermissionsAsync();
 
             var PermissionDTOs = new List<PermissionDTO>();
 
@@ -42,7 +42,7 @@ namespace TaskManagementSystem.Core.Services
 
         public async Task<PermissionDTO> GetPermissionById(int id)
         {
-            var Permission = await _PermissionRepository.GetPermissionByIdAsync(id);
+            var Permission = await _permissionRepository.GetPermissionByIdAsync(id);
 
             if (Permission == null)
                 return new PermissionDTO();
@@ -56,7 +56,7 @@ namespace TaskManagementSystem.Core.Services
             return PermissionDTO;
         }
 
-        public async Task<int> AddPermission(PermissionDTO PermissionDTO)
+        public async Task<string> AddPermission(PermissionDTO PermissionDTO)
         {
             if (PermissionDTO == null)
                 throw new Exception("Permission is null!");
@@ -69,35 +69,34 @@ namespace TaskManagementSystem.Core.Services
                 Type = PermissionDTO.Type,
             };
 
-            var PermissionId = await _PermissionRepository.AddPermissionAsync(Permission);
+            await _permissionRepository.AddPermissionAsync(Permission);
 
-            return PermissionId;
+            return "Successful addition!";
         }
 
         public async Task<string> UpdatePermission(PermissionDTO PermissionDTO)
         {
             if (PermissionDTO == null)
-                throw new Exception("Permission is null!");
+                throw new AppException("Permission is null!");
 
-            if (PermissionDTO.Type == null)
-                throw new Exception("Permission type is null!");
+            var Permission = await _permissionRepository.GetPermissionByIdAsync(PermissionDTO.Id);
 
-            var Permission = new Permission
-            {
-                Id = PermissionDTO.Id,
-                Type = PermissionDTO.Type,
-            };
+            if (Permission == null)
+                throw new AppException("Permission not found!");
 
-            await _PermissionRepository.UpdatePermissionAsync(Permission);
+            if(PermissionDTO.Type != null)
+                Permission.Type = PermissionDTO.Type;
+
+            await _permissionRepository.UpdatePermissionAsync(Permission);
 
             return "Successful update!";
         }
 
         public async Task<string> DeletePermission(int id)
         {
-            await _PermissionRepository.DeletePermissionAsync(id);
+            await _permissionRepository.DeletePermissionAsync(id);
 
-            return "Successful update!";
+            return "Successful deletion!";
         }
     }
 }

@@ -13,7 +13,7 @@ namespace TaskManagementSystem.Core.Interfaces
     {
         Task<List<PermissionDTO>> GetPermissions();
         Task<PermissionDTO> GetPermissionById(int id);
-        Task<int> AddPermission(PermissionDTO PermissionDTO);
+        Task<string> AddPermission(PermissionDTO PermissionDTO);
         Task<string> UpdatePermission(PermissionDTO PermissionDTO);
         Task<string> DeletePermission(int id);
     }

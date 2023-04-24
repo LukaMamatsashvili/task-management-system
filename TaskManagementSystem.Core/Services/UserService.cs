@@ -114,10 +114,19 @@ namespace TaskManagementSystem.Core.Services
             return PermissionDTOs;
         }
 
-        public async Task<UserDTO> AddUser(UserDTO UserDTO)
+        public async Task<string> AddUser(UserDTO UserDTO)
         {
+            if (string.IsNullOrWhiteSpace(UserDTO.Username))
+                throw new AppException("Username is required!");
+
             if (string.IsNullOrWhiteSpace(UserDTO.Password))
                 throw new AppException("Password is required!");
+
+            if (UserDTO.UserRole == null)
+                throw new AppException("UserRole is required!");
+
+            if (UserDTO.UserRole.Id == null || string.IsNullOrEmpty(UserDTO.UserRole.Type))
+                throw new AppException("UserRole is required!");
 
             if ((await _userRepository.GetUserByUsernameAsync(UserDTO.Username)).Username != null)
                 throw new AppException("Username \"" + UserDTO.Username + "\" is already taken!");
@@ -127,13 +136,17 @@ namespace TaskManagementSystem.Core.Services
                 UserRoleId = UserDTO.UserRole.Id,
                 Username = UserDTO.Username,
             };
-            
-            foreach(var Permission in UserDTO.Permissions)
+
+            if (UserDTO.Permissions != null && UserDTO.Permissions?.Count != 0)
             {
-                await _userPermissionLinkRepository.AddUserPermissionLinkAsync(new UserPermissionLink {
-                    UserId = UserDTO.Id,
-                    PermissionId = Permission.Id,
-                });
+                foreach (var Permission in UserDTO.Permissions)
+                {
+                    await _userPermissionLinkRepository.AddUserPermissionLinkAsync(new UserPermissionLink
+                    {
+                        UserId = UserDTO.Id,
+                        PermissionId = Permission.Id,
+                    });
+                }
             }
 
             byte[] passwordHash, passwordSalt;
@@ -144,11 +157,14 @@ namespace TaskManagementSystem.Core.Services
 
             await _userRepository.AddUserAsync(User);
 
-            return UserDTO;
+            return "Successful addition!";
         }
 
-        public async Task UpdateUser(UserDTO UserDTO)
+        public async Task<string> UpdateUser(UserDTO UserDTO)
         {
+            if (UserDTO == null)
+                throw new AppException("User is null!");
+
             var User = await _userRepository.GetUserByIdAsync(UserDTO.Id);
 
             if (User == null)
@@ -178,11 +194,15 @@ namespace TaskManagementSystem.Core.Services
             }
 
             await _userRepository.UpdateUserAsync(User);
+
+            return "Successful update!";
         }
 
-        public async Task DeleteUser(int id)
+        public async Task<string> DeleteUser(int id)
         {
             await _userRepository.DeleteUserAsync(id);
+
+            return "Successful deletion!";
         }
 
         private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)

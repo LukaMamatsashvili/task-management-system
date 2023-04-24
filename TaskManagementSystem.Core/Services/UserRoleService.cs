@@ -4,6 +4,8 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManagementSystem.Core.Common;
+using TaskManagementSystem.Core.DataAccess;
 using TaskManagementSystem.Core.DTOs;
 using TaskManagementSystem.Core.Interfaces;
 using TaskManagementSystem.Infrastructure.Models;
@@ -54,7 +56,7 @@ namespace TaskManagementSystem.Core.Services
             return userRoleDTO;
         }
 
-        public async Task<int> AddUserRole(UserRoleDTO UserRoleDTO)
+        public async Task<string> AddUserRole(UserRoleDTO UserRoleDTO)
         {
             if (UserRoleDTO == null)
                 throw new Exception("UserRole is null!");
@@ -67,24 +69,23 @@ namespace TaskManagementSystem.Core.Services
                 Type = UserRoleDTO.Type,
             };
 
-            var userRoleId = await _userRoleRepository.AddUserRoleAsync(UserRole);
+            await _userRoleRepository.AddUserRoleAsync(UserRole);
 
-            return userRoleId;
+            return "Successful addition!";
         }
 
         public async Task<string> UpdateUserRole(UserRoleDTO UserRoleDTO)
         {
             if (UserRoleDTO == null)
-                throw new Exception("UserRole is null!");
+                throw new AppException("UserRole is null!");
 
-            if(UserRoleDTO.Type == null)
-                throw new Exception("UserRole type is null!");
+            var UserRole = await _userRoleRepository.GetUserRoleByIdAsync(UserRoleDTO.Id);
 
-            var UserRole = new UserRole
-            {
-                Id = UserRoleDTO.Id,
-                Type = UserRoleDTO.Type,
-            };
+            if (UserRole == null)
+                throw new AppException("UserRole not found!");
+
+            if (UserRoleDTO.Type != null)
+                UserRole.Type = UserRoleDTO.Type;
 
             await _userRoleRepository.UpdateUserRoleAsync(UserRole);
 
@@ -95,7 +96,7 @@ namespace TaskManagementSystem.Core.Services
         {
             await _userRoleRepository.DeleteUserRoleAsync(id);
 
-            return "Successful update!";
+            return "Successful deletion!";
         }
     }
 }

@@ -13,7 +13,7 @@ namespace TaskManagementSystem.Core.Interfaces
     {
         Task<List<UserRoleDTO>> GetUserRoles();
         Task<UserRoleDTO> GetUserRoleById(int id);
-        Task<int> AddUserRole(UserRoleDTO UserRoleDTO);
+        Task<string> AddUserRole(UserRoleDTO UserRoleDTO);
         Task<string> UpdateUserRole(UserRoleDTO UserRoleDTO);
         Task<string> DeleteUserRole(int id);
     }
