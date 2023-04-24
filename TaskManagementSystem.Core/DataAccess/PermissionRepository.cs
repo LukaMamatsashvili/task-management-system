@@ -26,16 +26,16 @@ namespace TaskManagementSystem.Core.DataAccess
             return await _context.Permissions.ToListAsync();
         }
 
-        public async Task<Permission> GetPermissionByIdAsync(int id)
+        public async Task<List<Permission>> GetPermissionsByIdAsync(int id)
         {
-            var Permission = await _context.Permissions.FirstOrDefaultAsync(t => t.Id == id);
+            var Permissions = await _context.Permissions.Where(t => t.Id == id).ToListAsync();
 
-            if (Permission == null)
+            if (Permissions == null)
             {
-                throw new NotFoundException($"Permission with ID '{id}' not found.");
+                throw new NotFoundException($"Permissions with ID '{id}' not found.");
             }
 
-            return Permission;
+            return Permissions;
         }
 
         public async Task<int> AddPermissionAsync(Permission Permission)

@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManagementSystem.Core.Common;
 using TaskManagementSystem.Core.DTOs;
 using TaskManagementSystem.Core.Interfaces;
 using TaskManagementSystem.Infrastructure.Models;
@@ -37,20 +39,26 @@ namespace TaskManagementSystem.Core.Services
             return PermissionDTOs;
         }
 
-        public async Task<PermissionDTO> GetPermissionById(int id)
+        public async Task<List<PermissionDTO>> GetPermissionsById(int id)
         {
-            var Permission = await _PermissionRepository.GetPermissionByIdAsync(id);
+            var Permissions = await _PermissionRepository.GetPermissionsByIdAsync(id);
 
-            if (Permission == null)
-                return new PermissionDTO();
+            var PermissionDTOs = new List<PermissionDTO>();
 
-            var PermissionDTO = new PermissionDTO
+            if (Permissions == null || Permissions?.Count == 0)
+                return PermissionDTOs;
+
+            foreach (var Permission in Permissions)
             {
-                Id = Permission.Id,
-                Type = Permission.Type,
-            };
-
-            return PermissionDTO;
+                var PermissionDTO = new PermissionDTO
+                {
+                    Id = Permission.Id,
+                    Type = Permission.Type,
+                };
+                PermissionDTOs.Add(PermissionDTO);
+            }
+        
+            return PermissionDTOs.ToList();
         }
 
         public async Task<int> AddPermission(PermissionDTO PermissionDTO)

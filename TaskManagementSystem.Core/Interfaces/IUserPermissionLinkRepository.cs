@@ -11,7 +11,7 @@ namespace TaskManagementSystem.Core.Interfaces
     public interface IUserPermissionLinkRepository
     {
         Task<List<UserPermissionLink>> GetUserPermissionLinksAsync();
-        Task<UserPermissionLink> GetUserPermissionLinkByIdAsync(int id);
+        Task<List<UserPermissionLink>> GetUserPermissionLinksByIdAsync(int id);
         Task<int> AddUserPermissionLinkAsync(UserPermissionLink UserPermissionLink);
         Task UpdateUserPermissionLinkAsync(UserPermissionLink UserPermissionLink);
         Task DeleteUserPermissionLinkAsync(int id);

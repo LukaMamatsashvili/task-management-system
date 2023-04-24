@@ -12,7 +12,7 @@ namespace TaskManagementSystem.Core.Interfaces
     public interface IPermissionService
     {
         Task<List<PermissionDTO>> GetPermissions();
-        Task<PermissionDTO> GetPermissionById(int id);
+        Task<List<PermissionDTO>> GetPermissionsById(int id);
         Task<int> AddPermission(PermissionDTO PermissionDTO);
         Task<string> UpdatePermission(PermissionDTO PermissionDTO);
         Task<string> DeletePermission(int id);

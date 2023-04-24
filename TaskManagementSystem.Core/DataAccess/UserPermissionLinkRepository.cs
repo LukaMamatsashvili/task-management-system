@@ -26,16 +26,16 @@ namespace TaskManagementSystem.Core.DataAccess
             return await _context.UserPermissionLinks.ToListAsync();
         }
 
-        public async Task<UserPermissionLink> GetUserPermissionLinkByIdAsync(int id)
+        public async Task<List<UserPermissionLink>> GetUserPermissionLinksByIdAsync(int id)
         {
-            var UserPermissionLink = await _context.UserPermissionLinks.FirstOrDefaultAsync(t => t.Id == id);
+            var UserPermissionLinks = await _context.UserPermissionLinks.Where(t => t.Id == id).ToListAsync();
 
-            if (UserPermissionLink == null)
+            if (UserPermissionLinks == null)
             {
-                throw new NotFoundException($"User role with ID '{id}' not found.");
+                throw new NotFoundException($"User Permission Links with ID '{id}' not found.");
             }
 
-            return UserPermissionLink;
+            return UserPermissionLinks;
         }
 
         public async Task<int> AddUserPermissionLinkAsync(UserPermissionLink UserPermissionLink)
