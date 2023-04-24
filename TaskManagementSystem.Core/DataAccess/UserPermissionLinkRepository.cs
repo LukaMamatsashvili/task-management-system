@@ -64,5 +64,18 @@ namespace TaskManagementSystem.Core.DataAccess
             _context.UserPermissionLinks.Remove(UserPermissionLink);
             await _context.SaveChangesAsync();
         }
+
+        public async Task DeleteUserPermissionLinksByUserId(int userId)
+        {
+            var UserPermissionLinks = await _context.UserPermissionLinks.Where(ta => ta.UserId == userId).ToListAsync();
+
+            if (UserPermissionLinks == null || !UserPermissionLinks.Any())
+            {
+                throw new NotFoundException($"User role with ID '{userId}' not found.");
+            }
+
+            _context.UserPermissionLinks.RemoveRange(UserPermissionLinks);
+            await _context.SaveChangesAsync();
+        }
     }
 }

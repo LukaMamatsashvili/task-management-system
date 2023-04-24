@@ -193,6 +193,20 @@ namespace TaskManagementSystem.Core.Services
                 User.PasswordSalt = passwordSalt;
             }
 
+            if (UserDTO.Permissions != null)
+            {
+                await _userPermissionLinkRepository.DeleteUserPermissionLinksByUserId(UserDTO.Id);
+
+                foreach (var Permission in UserDTO.Permissions)
+                {
+                    await _userPermissionLinkRepository.AddUserPermissionLinkAsync(new UserPermissionLink
+                    {
+                        UserId = UserDTO.Id,
+                        PermissionId = Permission.Id,
+                    });
+                }
+            }
+
             await _userRepository.UpdateUserAsync(User);
 
             return "Successful update!";

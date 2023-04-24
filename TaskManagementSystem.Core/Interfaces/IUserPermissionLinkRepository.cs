@@ -15,5 +15,6 @@ namespace TaskManagementSystem.Core.Interfaces
         Task<int> AddUserPermissionLinkAsync(UserPermissionLink UserPermissionLink);
         Task UpdateUserPermissionLinkAsync(UserPermissionLink UserPermissionLink);
         Task DeleteUserPermissionLinkAsync(int id);
+        Task DeleteUserPermissionLinksByUserId(int userId);
     }
 }
