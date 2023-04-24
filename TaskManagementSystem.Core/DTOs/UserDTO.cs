@@ -11,6 +11,6 @@ namespace TaskManagementSystem.Core.DTOs
         [MinLength(8)]
         [MaxLength(20)]
         public string Password { get; set; }
-        public List<PermissionDTO> Permissions { get; set; }
+        public List<PermissionDTO>? Permissions { get; set; }
     }
 }

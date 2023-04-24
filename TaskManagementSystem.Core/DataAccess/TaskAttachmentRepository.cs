@@ -38,6 +38,13 @@ namespace TaskManagementSystem.Core.DataAccess
             return TaskAttachment;
         }
 
+        public async Task<List<TaskAttachment>> GetTaskAttachmentsByTaskIdAsync(int taskId)
+        {
+            var TaskAttachments = await _context.TaskAttachments.Where(t => t.TaskId == taskId).ToListAsync();
+
+            return TaskAttachments;
+        }
+
         public async Task<int> AddTaskAttachmentAsync(TaskAttachment TaskAttachment)
         {
             await _context.TaskAttachments.AddAsync(TaskAttachment);
@@ -62,6 +69,19 @@ namespace TaskManagementSystem.Core.DataAccess
             }
 
             _context.TaskAttachments.Remove(TaskAttachment);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteTaskAttachmentsByTaskIdAsync(int taskId)
+        {
+            var taskAttachments = await _context.TaskAttachments.Where(ta => ta.TaskId == taskId).ToListAsync();
+
+            if (taskAttachments == null || !taskAttachments.Any())
+            {
+                throw new NotFoundException($"Task attachment with ID '{taskId}' not found.");
+            }
+
+            _context.TaskAttachments.RemoveRange(taskAttachments);
             await _context.SaveChangesAsync();
         }
     }

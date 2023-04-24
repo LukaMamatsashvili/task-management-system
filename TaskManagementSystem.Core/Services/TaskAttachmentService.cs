@@ -61,6 +61,27 @@ namespace TaskManagementSystem.Core.Services
             return TaskAttachmentDTO;
         }
 
+        public async Task<List<TaskAttachmentDTO>> GetTaskAttachmentsByTaskId(int taskId)
+        {
+            var TaskAttachments = await _taskAttachmentRepository.GetTaskAttachmentsByTaskIdAsync(taskId);
+
+            var TaskAttachmentDTOs = new List<TaskAttachmentDTO>();
+
+            if (TaskAttachments == null)
+                return TaskAttachmentDTOs;
+
+            TaskAttachmentDTOs = TaskAttachments.Select(taskAttachment => new TaskAttachmentDTO
+            {
+                Id = taskAttachment.Id,
+                TaskId = taskAttachment.TaskId,
+                FileName = taskAttachment.FileName,
+                ContentType = taskAttachment.ContentType,
+                FileData = taskAttachment.FileData,
+            }).ToList();
+
+            return TaskAttachmentDTOs;
+        }
+
         public async Task<string> AddTaskAttachment(TaskAttachmentDTO TaskAttachmentDTO)
         {
             if (TaskAttachmentDTO == null)
@@ -118,6 +139,13 @@ namespace TaskManagementSystem.Core.Services
         public async Task<string> DeleteTaskAttachment(int id)
         {
             await _taskAttachmentRepository.DeleteTaskAttachmentAsync(id);
+
+            return "Successful deletion!";
+        }
+
+        public async Task<string> DeleteTaskAttachmentsByTaskId(int taskId)
+        {
+            await _taskAttachmentRepository.DeleteTaskAttachmentsByTaskIdAsync(taskId);
 
             return "Successful deletion!";
         }

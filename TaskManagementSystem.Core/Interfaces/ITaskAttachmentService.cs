@@ -13,8 +13,10 @@ namespace TaskManagementSystem.Core.Interfaces
     {
         Task<List<TaskAttachmentDTO>> GetTaskAttachments();
         Task<TaskAttachmentDTO> GetTaskAttachmentById(int id);
+        Task<List<TaskAttachmentDTO>> GetTaskAttachmentsByTaskId(int taskId);
         Task<string> AddTaskAttachment(TaskAttachmentDTO TaskAttachmentDTO);
         Task<string> UpdateTaskAttachment(TaskAttachmentDTO TaskAttachmentDTO);
         Task<string> DeleteTaskAttachment(int id);
+        Task<string> DeleteTaskAttachmentsByTaskId(int taskId);
     }
 }
