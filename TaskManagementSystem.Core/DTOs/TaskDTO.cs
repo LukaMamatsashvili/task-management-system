@@ -5,10 +5,8 @@ namespace TaskManagementSystem.Core.DTOs
     public class TaskDTO
     {
         public int Id { get; set; }
-        [Required]
         public int AssignedUserId { get; set; }
         public int CreatorId { get; set; }
-        [Required]
         [MaxLength(50)]
         public string Title { get; set; }
         [MaxLength(100)]

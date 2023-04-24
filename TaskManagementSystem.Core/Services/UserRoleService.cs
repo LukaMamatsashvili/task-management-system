@@ -64,7 +64,6 @@ namespace TaskManagementSystem.Core.Services
 
             var UserRole = new UserRole
             {
-                Id = UserRoleDTO.Id,
                 Type = UserRoleDTO.Type,
             };
 

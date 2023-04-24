@@ -66,7 +66,6 @@ namespace TaskManagementSystem.Core.Services
 
             var Permission = new Permission
             {
-                Id = PermissionDTO.Id,
                 Type = PermissionDTO.Type,
             };
 
