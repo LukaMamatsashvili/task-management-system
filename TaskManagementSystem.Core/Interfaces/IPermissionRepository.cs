@@ -11,7 +11,7 @@ namespace TaskManagementSystem.Core.Interfaces
     public interface IPermissionRepository
     {
         Task<List<Permission>> GetPermissionsAsync();
-        Task<List<Permission>> GetPermissionsByIdAsync(int id);
+        Task<Permission> GetPermissionByIdAsync(int id);
         Task<int> AddPermissionAsync(Permission Permission);
         Task UpdatePermissionAsync(Permission Permission);
         Task DeletePermissionAsync(int id);

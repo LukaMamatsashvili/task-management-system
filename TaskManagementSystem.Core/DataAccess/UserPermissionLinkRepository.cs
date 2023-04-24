@@ -26,13 +26,13 @@ namespace TaskManagementSystem.Core.DataAccess
             return await _context.UserPermissionLinks.ToListAsync();
         }
 
-        public async Task<List<UserPermissionLink>> GetUserPermissionLinksByIdAsync(int id)
+        public async Task<List<UserPermissionLink>> GetUserPermissionLinksByUserIdAsync(int userId)
         {
-            var UserPermissionLinks = await _context.UserPermissionLinks.Where(t => t.Id == id).ToListAsync();
+            var UserPermissionLinks = await _context.UserPermissionLinks.Where(t => t.UserId == userId).ToListAsync();
 
             if (UserPermissionLinks == null)
             {
-                throw new NotFoundException($"User Permission Links with ID '{id}' not found.");
+                throw new NotFoundException($"User Permission Links with ID '{userId}' not found.");
             }
 
             return UserPermissionLinks;

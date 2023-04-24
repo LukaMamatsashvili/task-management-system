@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TaskManagementSystem.Core.Common;
+using TaskManagementSystem.Core.DataAccess;
 using TaskManagementSystem.Core.DTOs;
 using TaskManagementSystem.Core.Interfaces;
 using TaskManagementSystem.Infrastructure.Models;
@@ -39,26 +40,20 @@ namespace TaskManagementSystem.Core.Services
             return PermissionDTOs;
         }
 
-        public async Task<List<PermissionDTO>> GetPermissionsById(int id)
+        public async Task<PermissionDTO> GetPermissionById(int id)
         {
-            var Permissions = await _PermissionRepository.GetPermissionsByIdAsync(id);
+            var Permission = await _PermissionRepository.GetPermissionByIdAsync(id);
 
-            var PermissionDTOs = new List<PermissionDTO>();
+            if (Permission == null)
+                return new PermissionDTO();
 
-            if (Permissions == null || Permissions?.Count == 0)
-                return PermissionDTOs;
-
-            foreach (var Permission in Permissions)
+            var PermissionDTO = new PermissionDTO
             {
-                var PermissionDTO = new PermissionDTO
-                {
-                    Id = Permission.Id,
-                    Type = Permission.Type,
-                };
-                PermissionDTOs.Add(PermissionDTO);
-            }
-        
-            return PermissionDTOs.ToList();
+                Id = Permission.Id,
+                Type = Permission.Type,
+            };
+
+            return PermissionDTO;
         }
 
         public async Task<int> AddPermission(PermissionDTO PermissionDTO)
