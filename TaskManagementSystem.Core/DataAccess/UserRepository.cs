@@ -42,11 +42,6 @@ namespace TaskManagementSystem.Core.DataAccess
         {
             var User = await _context.Users.FirstOrDefaultAsync(t => t.Username == username);
 
-            if (User == null)
-            {
-                throw new NotFoundException($"User with UserName '{username}' not found.");
-            }
-
             return User;
         }
 

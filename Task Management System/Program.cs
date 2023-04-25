@@ -1,7 +1,13 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
+using System.Text;
 using TaskManagementSystem.Core.DataAccess;
 using TaskManagementSystem.Core.Interfaces;
 using TaskManagementSystem.Core.Services;
 using TaskManagementSystem.Infrastructure;
+using TaskManagementSystem.Shared.Extension;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,27 +21,46 @@ builder.Services.AddCors();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//Add DbContext
+builder.Services.AddSettings(builder.Configuration);
+
 //Add Repositories
-builder.Services.AddScoped<IPermissionRepository, PermissionRepository>();
-builder.Services.AddScoped<ITaskAttachmentRepository, TaskAttachmentRepository>();
-builder.Services.AddScoped<ITaskRepository, TaskRepository>();
-builder.Services.AddScoped<IUserPermissionLinkRepository, UserPermissionLinkRepository>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
-//
+builder.Services.AddRepositories();
 
 //Add Services
-builder.Services.AddScoped<IPermissionService, PermissionService>();
-builder.Services.AddScoped<ITaskAttachmentService, TaskAttachmentService>();
-builder.Services.AddScoped<ITaskService, TaskService>();
-builder.Services.AddScoped<IUserAuthorizationService, UserAuthorizationService>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IUserRoleService, UserRoleService>();
-//
+builder.Services.AddServices();
 
-//Add DbContext
-builder.Services.AddDbContext<TaskManagementDbContext>();
-//
+//Add HttpClient
+builder.Services.AddHttpClient();
+
+//Authorization & Authentication
+builder.Services.AddSwaggerGen(opts =>
+{
+    opts.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "Standard Authorization header using the bearer scheme (\"bearer {token}\")",
+        In = ParameterLocation.Header,
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+
+    opts.OperationFilter<SecurityRequirementsOperationFilter>();
+});
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+.AddJwtBearer(opts =>
+{
+    opts.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.
+        GetBytes(builder.Configuration["Jwt:SecretToken"])),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
+});
+
 
 var app = builder.Build();
 
@@ -53,6 +78,8 @@ app.UseCors(builder => builder
     .AllowAnyOrigin()
     .AllowAnyMethod()
     .AllowAnyHeader());
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

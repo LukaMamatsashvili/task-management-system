@@ -3,7 +3,7 @@
 namespace TaskManagementSystem.Core.Common
 {
     [Serializable]
-    internal class AppException : Exception
+    public class AppException : Exception
     {
         public AppException()
         {

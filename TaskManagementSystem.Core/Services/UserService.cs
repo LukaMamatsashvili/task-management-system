@@ -123,13 +123,13 @@ namespace TaskManagementSystem.Core.Services
             if (UserDTO.UserRole == null)
                 throw new AppException("UserRole is required!");
 
-            if (UserDTO.UserRole.Id == null || string.IsNullOrEmpty(UserDTO.UserRole.Type))
+            if (UserDTO.UserRole.Id == null)
                 throw new AppException("UserRole is required!");
 
-            if ((await _userRepository.GetUserByUsernameAsync(UserDTO.Username)).Username != null)
+            if ((await _userRepository.GetUserByUsernameAsync(UserDTO.Username))?.Username != null)
                 throw new AppException("Username \"" + UserDTO.Username + "\" is already taken!");
 
-            var User = new User
+            var User = new User     
             {
                 UserRoleId = UserDTO.UserRole.Id,
                 Username = UserDTO.Username,
@@ -163,7 +163,7 @@ namespace TaskManagementSystem.Core.Services
             if (UserDTO == null)
                 throw new AppException("User is null!");
 
-            var User = await _userRepository.GetUserByIdAsync(UserDTO.Id);
+            var User = await _userRepository.GetUserByUsernameAsync(UserDTO.Username);
 
             if (User == null)
                 throw new AppException("User not found");
@@ -193,13 +193,13 @@ namespace TaskManagementSystem.Core.Services
 
             if (UserDTO.Permissions != null)
             {
-                await _userPermissionLinkRepository.DeleteUserPermissionLinksByUserId(UserDTO.Id);
+                await _userPermissionLinkRepository.DeleteUserPermissionLinksByUserId(User.Id);
 
                 foreach (var Permission in UserDTO.Permissions)
                 {
                     await _userPermissionLinkRepository.AddUserPermissionLinkAsync(new UserPermissionLink
                     {
-                        UserId = UserDTO.Id,
+                        UserId = User.Id,
                         PermissionId = Permission.Id,
                     });
                 }
