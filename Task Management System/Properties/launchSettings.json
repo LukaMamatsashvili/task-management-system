@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "Task_Management_System": {
+    "TaskManagementSystem.Api": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

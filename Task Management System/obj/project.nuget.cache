@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "dtFEYPrcug51FmnxVGSbBeb/MbYYqeSIjnY9Dq0uaht9+v2RJfn5CXDlHl5WGQmYtPScl/BPJHcgICxCyAHD+A==",
+  "dgSpecHash": "ETsw0Gxm68SLToZOGxPDXD/vFvSF9zqbSaapESSm4INQA0BNjrnr6wbCtvc5T2jx2Tz29K7E4TOgBTh/ka1YgA==",
   "success": true,
-  "projectFilePath": "E:\\Desktop 2023\\Development\\Job opportunities\\11. Digital Settings\\TaskManagementSystem\\Task Management System\\Task Management System.csproj",
+  "projectFilePath": "E:\\Desktop 2023\\Development\\Job opportunities\\11. Digital Settings\\TaskManagementSystem\\Task Management System\\TaskManagementSystem.Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\lukam\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\lukam\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",

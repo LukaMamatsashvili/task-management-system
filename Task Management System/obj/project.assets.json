@@ -3478,9 +3478,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Desktop 2023\\Development\\Job opportunities\\11. Digital Settings\\TaskManagementSystem\\Task Management System\\Task Management System.csproj",
-      "projectName": "Task Management System",
-      "projectPath": "E:\\Desktop 2023\\Development\\Job opportunities\\11. Digital Settings\\TaskManagementSystem\\Task Management System\\Task Management System.csproj",
+      "projectUniqueName": "E:\\Desktop 2023\\Development\\Job opportunities\\11. Digital Settings\\TaskManagementSystem\\Task Management System\\TaskManagementSystem.Api.csproj",
+      "projectName": "TaskManagementSystem.Api",
+      "projectPath": "E:\\Desktop 2023\\Development\\Job opportunities\\11. Digital Settings\\TaskManagementSystem\\Task Management System\\TaskManagementSystem.Api.csproj",
       "packagesPath": "C:\\Users\\lukam\\.nuget\\packages\\",
       "outputPath": "E:\\Desktop 2023\\Development\\Job opportunities\\11. Digital Settings\\TaskManagementSystem\\Task Management System\\obj\\",
       "projectStyle": "PackageReference",
