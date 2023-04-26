@@ -37,7 +37,7 @@ namespace TaskManagementSystem.Core.Services
                 var userDTO = new UserDTO
                 {
                     Id = user.Id,
-                    UserRole = await _userRoleService.GetUserRoleById(user.Id),
+                    UserRole = (await _userRoleService.GetUserRoleById(user.Id)).UserRole,
                     Username = user.Username,
                 };
 
@@ -57,7 +57,7 @@ namespace TaskManagementSystem.Core.Services
             var UserDTO = new UserDTO
             {
                 Id = User.Id,
-                UserRole = await _userRoleService.GetUserRoleById(User.Id),
+                UserRole = (await _userRoleService.GetUserRoleById(User.Id)).UserRole,
                 Username = User.Username,
             };
 
@@ -74,7 +74,7 @@ namespace TaskManagementSystem.Core.Services
             var UserDTO = new UserDTO
             {
                 Id = User.Id,
-                UserRole = await _userRoleService.GetUserRoleById(User.Id),
+                UserRole = (await _userRoleService.GetUserRoleById(User.Id)).UserRole,
                 Username = User.Username,
             };
 

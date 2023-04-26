@@ -76,7 +76,7 @@ namespace TaskManagementSystem.Core.Services
                 return "Invalid credentials";
             }
 
-            var userRole = (await _userRoleService.GetUserRoleById(User.UserRoleId)).Type;
+            var userRole = (await _userRoleService.GetUserRoleById(User.UserRoleId)).UserRole.Type;
 
             List<Claim> claims = new List<Claim>
             {

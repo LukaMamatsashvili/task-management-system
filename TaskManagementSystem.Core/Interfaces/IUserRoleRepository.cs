@@ -12,8 +12,9 @@ namespace TaskManagementSystem.Core.Interfaces
     {
         Task<List<UserRole>> GetUserRolesAsync();
         Task<UserRole> GetUserRoleByIdAsync(int id);
+        Task<UserRole> GetUserRoleByTypeAsync(string type);
         Task<int> AddUserRoleAsync(UserRole UserRole);
-        Task UpdateUserRoleAsync(UserRole UserRole);
-        Task DeleteUserRoleAsync(int id);
+        Task<int> UpdateUserRoleAsync(UserRole UserRole);
+        Task<int> DeleteUserRoleAsync(UserRole UserRole);
     }
 }

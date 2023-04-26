@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManagementSystem.Core.Common;
 using TaskManagementSystem.Core.DTOs;
 using TaskManagementSystem.Infrastructure.Models;
 using Task = System.Threading.Tasks.Task;
@@ -11,10 +12,10 @@ namespace TaskManagementSystem.Core.Interfaces
 {
     public interface IUserRoleService
     {
-        Task<List<UserRoleDTO>> GetUserRoles();
-        Task<UserRoleDTO> GetUserRoleById(int id);
-        Task<string> AddUserRole(UserRoleDTO UserRoleDTO);
-        Task<string> UpdateUserRole(UserRoleDTO UserRoleDTO);
-        Task<string> DeleteUserRole(int id);
+        Task<UserRolesResponse> GetUserRoles();
+        Task<UserRoleResponse> GetUserRoleById(int id);
+        Task<Response> AddUserRole(UserRoleDTO UserRoleDTO);
+        Task<Response> UpdateUserRole(UserRoleDTO UserRoleDTO);
+        Task<Response> DeleteUserRole(int id);
     }
 }

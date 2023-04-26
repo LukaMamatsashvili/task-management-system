@@ -23,46 +23,87 @@ namespace TaskManagementSystem.Core.DataAccess
 
         public async Task<List<UserRole>> GetUserRolesAsync()
         {
-            return await _context.UserRoles.ToListAsync();
+            try
+            {
+                return await _context.UserRoles.ToListAsync();
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<UserRole> GetUserRoleByIdAsync(int id)
         {
-            var UserRole = await _context.UserRoles.FirstOrDefaultAsync(t => t.Id == id);
-
-            if (UserRole == null)
+            try
             {
-                throw new NotFoundException($"User role with ID '{id}' not found.");
-            }
+                var UserRole = await _context.UserRoles.FirstOrDefaultAsync(t => t.Id == id);
 
-            return UserRole;
+                return UserRole;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<UserRole> GetUserRoleByTypeAsync(string type)
+        {
+            try
+            {
+                var UserRole = await _context.UserRoles.FirstOrDefaultAsync(t => t.Type == type);
+
+                return UserRole;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<int> AddUserRoleAsync(UserRole UserRole)
         {
-            await _context.UserRoles.AddAsync(UserRole);
-            await _context.SaveChangesAsync();
-
-            return UserRole.Id;
-        }
-
-        public async Task UpdateUserRoleAsync(UserRole UserRole)
-        {
-            _context.Entry(UserRole).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task DeleteUserRoleAsync(int id)
-        {
-            var UserRole = await _context.UserRoles.FindAsync(id);
-
-            if (UserRole == null)
+            try
             {
-                throw new NotFoundException($"User role with ID '{id}' not found.");
-            }
+                await _context.UserRoles.AddAsync(UserRole);
+                await _context.SaveChangesAsync();
 
-            _context.UserRoles.Remove(UserRole);
-            await _context.SaveChangesAsync();
+                return UserRole.Id;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> UpdateUserRoleAsync(UserRole UserRole)
+        {
+            try
+            {
+                _context.Entry(UserRole).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+
+                return UserRole.Id;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> DeleteUserRoleAsync(UserRole UserRole)
+        {
+            try
+            {
+                _context.UserRoles.Remove(UserRole);
+                await _context.SaveChangesAsync();
+
+                return UserRole.Id;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }
