@@ -125,12 +125,7 @@ namespace TaskManagementSystem.Core.Services
                     return response;
                 }
 
-                var UserRole = new UserRole
-                {
-                    Type = UserRoleDTO.Type,
-                };
-
-                await _userRoleRepository.AddUserRoleAsync(UserRole);
+                await _userRoleRepository.AddUserRoleAsync(new UserRole { Type = UserRoleDTO.Type });
 
                 response.ResponseMessage.StatusCode = HttpStatusCode.OK;
                 response.Message = "Successful Addition!";
@@ -154,7 +149,7 @@ namespace TaskManagementSystem.Core.Services
                 if (UserRoleDTO == null)
                 {
                     response.ResponseMessage.StatusCode = HttpStatusCode.BadRequest;
-                    response.Message = "User Role is Required!";
+                    response.Message = "User Role is null!";
 
                     return response;
                 }

@@ -23,40 +23,41 @@ namespace TaskManagementSystem.Api.Controllers
         [HttpGet]
         public async Task<UserRolesResponse> GetUserRoles()
         {
-            var userRolesResponse = await _userRoleService.GetUserRoles();
-            return userRolesResponse;
+            var response = await _userRoleService.GetUserRoles();
+
+            return response;
         }
 
         [HttpGet("{id}")]
         public async Task<UserRoleResponse> GetUserRoleById(int id)
         {
-            var UserRoleResponse = await _userRoleService.GetUserRoleById(id);
+            var response = await _userRoleService.GetUserRoleById(id);
 
-            return UserRoleResponse;
+            return response;
         }
 
         [HttpPost]
         public async Task<Response> AddUserRole([FromBody] UserRoleDTO UserRoleDTO)
         {
-            var Response = await _userRoleService.AddUserRole(UserRoleDTO);
+            var response = await _userRoleService.AddUserRole(UserRoleDTO);
 
-            return Response;
+            return response;
         }
 
         [HttpPut]
         public async Task<Response> UpdateUserRole([FromBody] UserRoleDTO updateUserRoleDTO)
         {
-            var Response = await _userRoleService.UpdateUserRole(updateUserRoleDTO);
+            var response = await _userRoleService.UpdateUserRole(updateUserRoleDTO);
 
-            return Response;
+            return response;
         }
 
         [HttpDelete("{id}")]
         public async Task<Response> DeleteUserRole(int id)
         {
-            var Response = await _userRoleService.DeleteUserRole(id);
+            var response = await _userRoleService.DeleteUserRole(id);
 
-            return Response;
+            return response;
         }
     }
 }
