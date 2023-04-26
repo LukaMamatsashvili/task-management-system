@@ -16,6 +16,7 @@ using TaskManagementSystem.Infrastructure.Models;
 using Task = System.Threading.Tasks.Task;
 using TaskManagementSystem.Core.DataAccess;
 using TaskManagementSystem.Core.Common;
+using System.Net;
 
 namespace TaskManagementSystem.Core.Services
 {
@@ -37,43 +38,84 @@ namespace TaskManagementSystem.Core.Services
             _httpClient = httpClient;
         }
 
-        public async Task<string> RegisterUser(UserDTO UserDTO)
+        public async Task<Response> RegisterUser(UserDTO UserDTO)
         {
-            var result = await _userService.AddUser(UserDTO);
+            var response = await _userService.AddUser(UserDTO);
 
-            return result;
+            if(response.ResponseMessage.StatusCode == HttpStatusCode.OK)
+                response.Message = "Successful Registration!";
+
+            return response;
         }
 
-        public async Task<string> AuthorizeUser(UserDTO UserDTO)
+        public async Task<TokenResponse> AuthorizeUser(UserDTO UserDTO)
         {
-            if (UserDTO == null)
-                throw new NotFoundException("User is null.");
+            var response = new TokenResponse();
+            try
+            {
+                if (UserDTO == null)
+                {
+                    response.ResponseMessage.StatusCode = HttpStatusCode.BadRequest;
+                    response.Message = "User is null!";
 
-            if (UserDTO.Username == null)
-                throw new AppException("Username is required!");
+                    return response;
+                }
 
-            if (UserDTO.Password == null)
-                throw new AppException("Password is required!");
+                if (UserDTO.Username == null)
+                {
+                    response.ResponseMessage.StatusCode = HttpStatusCode.BadRequest;
+                    response.Message = "Username is required!";
 
-            var token = await AuthenticateUser(UserDTO.Username, UserDTO.Password);
+                    return response;
+                }
 
-            if (string.IsNullOrEmpty(token))
-                throw new AppException("Token is empty");
+                if (UserDTO.Password == null)
+                {
+                    response.ResponseMessage.StatusCode = HttpStatusCode.BadRequest;
+                    response.Message = "Password is required!";
 
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    return response;
+                }
 
-            var result = token;
+                var tokenResponse = await AuthenticateUser(UserDTO.Username, UserDTO.Password);
 
-            return result;
+                if (string.IsNullOrEmpty(tokenResponse.Token))
+                {
+                    response.ResponseMessage.StatusCode = HttpStatusCode.BadRequest;
+                    response.Message = "Token is Empty!";
+
+                    return response;
+                }
+
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenResponse.Token);
+
+                response.Token = tokenResponse.Token;
+
+                response.ResponseMessage.StatusCode = HttpStatusCode.OK;
+                response.Message = "Successful Authorization!";
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.ResponseMessage.StatusCode = HttpStatusCode.InternalServerError;
+                response.Message = ex.Message;
+
+                return response;
+            }
         }
 
-        private async Task<string> AuthenticateUser(string username, string password)
+        private async Task<TokenResponse> AuthenticateUser(string username, string password)
         {
+            var response = new TokenResponse();
+
             var User = await _userRepository.GetUserByUsernameAsync(username);
-
             if (User == null || !VerifyPasswordHash(password, User.PasswordHash, User.PasswordSalt))
             {
-                return "Invalid credentials";
+                response.ResponseMessage.StatusCode = HttpStatusCode.BadRequest;
+                response.Message = "Invalid Credentials!";
+
+                return response;
             }
 
             var userRole = (await _userRoleService.GetUserRoleById(User.UserRoleId)).UserRole.Type;
@@ -94,8 +136,9 @@ namespace TaskManagementSystem.Core.Services
                 signingCredentials: creds);
 
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+            response.Token = jwt;
 
-            return jwt;
+            return response;
         }
 
         private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)

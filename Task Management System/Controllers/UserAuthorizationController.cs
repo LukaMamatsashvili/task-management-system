@@ -15,8 +15,8 @@ using TaskManagementSystem.Infrastructure.Models;
 
 namespace TaskManagementSystem.Api.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     [AllowAnonymous]
     public class UserAuthorizationController : ControllerBase
     {
@@ -30,19 +30,19 @@ namespace TaskManagementSystem.Api.Controllers
 
 
         [HttpPost("register")]
-        public async Task<ActionResult> RegisterUser(UserDTO UserDTO)
+        public async Task<Response> RegisterUser(UserDTO UserDTO)
         {
-            string result = await _userAuthorizationService.RegisterUser(UserDTO);
+            var response = await _userAuthorizationService.RegisterUser(UserDTO);
 
-            return Ok(result);
+            return response;
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<string>> LoginUser(UserDTO UserDTO)
+        public async Task<TokenResponse> LoginUser(UserDTO UserDTO)
         {
-            string token = await _userAuthorizationService.AuthorizeUser(UserDTO);
+            var response = await _userAuthorizationService.AuthorizeUser(UserDTO);
 
-            return Ok(token);
+            return response;
         }
     }
 }

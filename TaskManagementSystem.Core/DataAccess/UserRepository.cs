@@ -23,53 +23,87 @@ namespace TaskManagementSystem.Core.DataAccess
 
         public async Task<List<User>> GetUsersAsync()
         {
-            return await _context.Users.ToListAsync();
+            try
+            {
+                return await _context.Users.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<User> GetUserByIdAsync(int id)
         {
-            var User = await _context.Users.FirstOrDefaultAsync(t => t.Id == id);
-
-            if (User == null)
+            try
             {
-                throw new NotFoundException($"User with ID '{id}' not found.");
-            }
+                var User = await _context.Users.FirstOrDefaultAsync(t => t.Id == id);
 
-            return User;
+                return User;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<User> GetUserByUsernameAsync(string username)
         {
-            var User = await _context.Users.FirstOrDefaultAsync(t => t.Username == username);
+            try
+            {
+                var User = await _context.Users.FirstOrDefaultAsync(t => t.Username == username);
 
-            return User;
+                return User;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<int> AddUserAsync(User User)
         {
-            await _context.Users.AddAsync(User);
-            await _context.SaveChangesAsync();
-
-            return User.Id;
-        }
-
-        public async Task UpdateUserAsync(User User)
-        {
-            _context.Entry(User).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task DeleteUserAsync(int id)
-        {
-            var User = await _context.Users.FindAsync(id);
-
-            if (User == null)
+            try
             {
-                throw new NotFoundException($"User with ID '{id}' not found.");
-            }
+                await _context.Users.AddAsync(User);
+                await _context.SaveChangesAsync();
 
-            _context.Users.Remove(User);
-            await _context.SaveChangesAsync();
+                return User.Id;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> UpdateUserAsync(User User)
+        {
+            try
+            {
+                _context.Entry(User).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+
+                return User.Id;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> DeleteUserAsync(User User)
+        {
+            try
+            {
+                _context.Users.Remove(User);
+                await _context.SaveChangesAsync();
+
+                return User.Id;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }
