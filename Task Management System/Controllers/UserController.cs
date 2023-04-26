@@ -28,7 +28,7 @@ namespace TaskManagementSystem.Api.Controllers
             return response;
         }
 
-        [HttpGet("{id}/id")]
+        [HttpGet("id/{id}")]
         public async Task<UserResponse> GetUserById(int id)
         {
             var response = await _UserService.GetUserById(id);
@@ -36,7 +36,7 @@ namespace TaskManagementSystem.Api.Controllers
             return response;
         }
 
-        [HttpGet("{username}/username")]
+        [HttpGet("username/{username}")]
         public async Task<UserResponse> GetUserByUsername(string username)
         {
             var response = await _UserService.GetUserByUsername(username);

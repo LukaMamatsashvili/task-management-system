@@ -12,11 +12,11 @@ namespace TaskManagementSystem.Core.Interfaces
     public interface ITaskAttachmentRepository
     {
         Task<List<TaskAttachment>> GetTaskAttachmentsAsync();
-        Task<TaskAttachment> GetTaskAttachmentByIdAsync(int id);
         Task<List<TaskAttachment>> GetTaskAttachmentsByTaskIdAsync(int taskId);
+        Task<TaskAttachment> GetTaskAttachmentByIdAsync(int id);
         Task<int> AddTaskAttachmentAsync(TaskAttachment TaskAttachment);
-        Task UpdateTaskAttachmentAsync(TaskAttachment TaskAttachment);
-        Task DeleteTaskAttachmentAsync(int id);
-        Task DeleteTaskAttachmentsByTaskIdAsync(int taskId);
+        Task<int> UpdateTaskAttachmentAsync(TaskAttachment TaskAttachment);
+        Task<int> DeleteTaskAttachmentAsync(TaskAttachment TaskAttachment);
+        Task DeleteTaskAttachmentsByTaskIdAsync(List<TaskAttachment> TaskAttachment);
     }
 }

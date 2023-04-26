@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManagementSystem.Core.Common;
 using TaskManagementSystem.Core.DTOs;
 using TaskManagementSystem.Infrastructure.Models;
 using Task = System.Threading.Tasks.Task;
@@ -11,10 +12,10 @@ namespace TaskManagementSystem.Core.Interfaces
 {
     public interface ITaskService
     {
-        Task<List<TaskDTO>> GetTasks();
-        Task<TaskDTO> GetTaskById(int id);
-        Task<string> AddTask(TaskDTO TaskDTO);
-        Task<string> UpdateTask(TaskDTO TaskDTO);
-        Task<string> DeleteTask(int id);
+        Task<TasksResponse> GetTasks();
+        Task<TaskResponse> GetTaskById(int id);
+        Task<Response> AddTask(TaskDTO TaskDTO);
+        Task<Response> UpdateTask(TaskDTO TaskDTO);
+        Task<Response> DeleteTask(int id);
     }
 }

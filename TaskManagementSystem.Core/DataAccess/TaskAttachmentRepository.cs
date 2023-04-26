@@ -23,66 +23,98 @@ namespace TaskManagementSystem.Core.DataAccess
 
         public async Task<List<TaskAttachment>> GetTaskAttachmentsAsync()
         {
-            return await _context.TaskAttachments.ToListAsync();
-        }
-
-        public async Task<TaskAttachment> GetTaskAttachmentByIdAsync(int id)
-        {
-            var TaskAttachment = await _context.TaskAttachments.FirstOrDefaultAsync(t => t.Id == id);
-
-            if (TaskAttachment == null)
+            try
             {
-                throw new NotFoundException($"Task attachment with ID '{id}' not found.");
+                return await _context.TaskAttachments.ToListAsync();
             }
-
-            return TaskAttachment;
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<List<TaskAttachment>> GetTaskAttachmentsByTaskIdAsync(int taskId)
         {
-            var TaskAttachments = await _context.TaskAttachments.Where(t => t.TaskId == taskId).ToListAsync();
+            try
+            {
+                return await _context.TaskAttachments.Where(t => t.TaskId == taskId).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
-            return TaskAttachments;
+        public async Task<TaskAttachment> GetTaskAttachmentByIdAsync(int id)
+        {
+            try
+            {
+                var TaskAttachment = await _context.TaskAttachments.FirstOrDefaultAsync(t => t.Id == id);
+
+                return TaskAttachment;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<int> AddTaskAttachmentAsync(TaskAttachment TaskAttachment)
         {
-            await _context.TaskAttachments.AddAsync(TaskAttachment);
-            await _context.SaveChangesAsync();
-
-            return TaskAttachment.Id;
-        }
-
-        public async Task UpdateTaskAttachmentAsync(TaskAttachment TaskAttachment)
-        {
-            _context.Entry(TaskAttachment).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task DeleteTaskAttachmentAsync(int id)
-        {
-            var TaskAttachment = await _context.TaskAttachments.FindAsync(id);
-
-            if (TaskAttachment == null)
+            try
             {
-                throw new NotFoundException($"Task attachment with ID '{id}' not found.");
-            }
+                await _context.TaskAttachments.AddAsync(TaskAttachment);
+                await _context.SaveChangesAsync();
 
-            _context.TaskAttachments.Remove(TaskAttachment);
-            await _context.SaveChangesAsync();
+                return TaskAttachment.Id;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
-        public async Task DeleteTaskAttachmentsByTaskIdAsync(int taskId)
+        public async Task<int> UpdateTaskAttachmentAsync(TaskAttachment TaskAttachment)
         {
-            var taskAttachments = await _context.TaskAttachments.Where(ta => ta.TaskId == taskId).ToListAsync();
-
-            if (taskAttachments == null || !taskAttachments.Any())
+            try
             {
-                throw new NotFoundException($"Task attachment with ID '{taskId}' not found.");
-            }
+                _context.Entry(TaskAttachment).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
 
-            _context.TaskAttachments.RemoveRange(taskAttachments);
-            await _context.SaveChangesAsync();
+                return TaskAttachment.Id;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> DeleteTaskAttachmentAsync(TaskAttachment TaskAttachment)
+        {
+            try
+            {
+                _context.TaskAttachments.Remove(TaskAttachment);
+                await _context.SaveChangesAsync();
+
+                return TaskAttachment.Id;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task DeleteTaskAttachmentsByTaskIdAsync(List<TaskAttachment> TaskAttachments)
+        {
+            try
+            {
+                _context.TaskAttachments.RemoveRange(TaskAttachments);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

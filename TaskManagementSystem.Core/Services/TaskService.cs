@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using TaskManagementSystem.Core.Common;
@@ -16,142 +17,331 @@ namespace TaskManagementSystem.Core.Services
     {
         private readonly ITaskRepository _taskRepository;
         private readonly ITaskAttachmentService _taskAttachmentService;
+        private readonly IUserService _userService;
 
-        public TaskService(ITaskRepository taskRepository, ITaskAttachmentService taskAttachmentService)
+        public TaskService(ITaskRepository taskRepository, ITaskAttachmentService taskAttachmentService, IUserService userService)
         {
             _taskRepository = taskRepository;
             _taskAttachmentService = taskAttachmentService;
+            _userService = userService;
         }
 
-        public async Task<List<TaskDTO>> GetTasks()
+        public async Task<TasksResponse> GetTasks()
         {
-            var Tasks = await _taskRepository.GetTasksAsync();
-
-            var TaskDTOs = new List<TaskDTO>();
-
-            if (Tasks == null || Tasks?.Count == 0)
-                return TaskDTOs;
-
-            foreach(var Task in Tasks)
+            var response = new TasksResponse();
+            try
             {
+                var Tasks = await _taskRepository.GetTasksAsync();
+
+                var TaskDTOs = new List<TaskDTO>();
+
+                if (Tasks == null || Tasks?.Count == 0)
+                {
+                    response.ResponseMessage.StatusCode = HttpStatusCode.NotFound;
+                    response.Message = "Tasks Not Found!";
+
+                    return response;
+                }
+
+                foreach (var Task in Tasks)
+                {
+                    var TaskDTO = new TaskDTO
+                    {
+                        Id = Task.Id,
+                        CreatorId = Task.CreatorId,
+                        AssignedUserId = Task.AssignedUserId,
+                        Title = Task.Title,
+                        ShortDescription = Task.ShortDescription,
+                        Description = Task.Description,
+                    };
+                    TaskDTO.AttachedFiles = (await _taskAttachmentService.GetTaskAttachmentsByTaskId(TaskDTO.Id)).TaskAttachments;
+
+                    TaskDTOs.Add(TaskDTO);
+                };
+
+                response.ResponseMessage.StatusCode = HttpStatusCode.OK;
+                response.Tasks = TaskDTOs;
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.ResponseMessage.StatusCode = HttpStatusCode.InternalServerError;
+                response.Message = ex.Message;
+
+                return response;
+            }
+        }
+
+        public async Task<TaskResponse> GetTaskById(int id)
+        {
+            var response = new TaskResponse();
+            try
+            {
+                var Task = await _taskRepository.GetTaskByIdAsync(id);
+
+                if (Task == null)
+                {
+                    response.ResponseMessage.StatusCode = HttpStatusCode.NotFound;
+                    response.Message = "Task Not Found!";
+
+                    return response;
+                }
+
                 var TaskDTO = new TaskDTO
                 {
                     Id = Task.Id,
-                    AssignedUserId = Task.AssignedUserId,
                     CreatorId = Task.CreatorId,
+                    AssignedUserId = Task.AssignedUserId,
                     Title = Task.Title,
                     ShortDescription = Task.ShortDescription,
                     Description = Task.Description,
                 };
-                TaskDTO.AttachedFiles = await _taskAttachmentService.GetTaskAttachmentsByTaskId(TaskDTO.Id);
+                TaskDTO.AttachedFiles = (await _taskAttachmentService.GetTaskAttachmentsByTaskId(TaskDTO.Id)).TaskAttachments;
 
-                TaskDTOs.Add(TaskDTO);
-            };
+                response.ResponseMessage.StatusCode = HttpStatusCode.OK;
+                response.Task = TaskDTO;
 
-            return TaskDTOs;
-        }
-
-        public async Task<TaskDTO> GetTaskById(int id)
-        {
-            var Task = await _taskRepository.GetTaskByIdAsync(id);
-
-            if (Task == null)
-                return new TaskDTO();
-
-            var TaskDTO = new TaskDTO
-            {
-                Id = Task.Id,
-                AssignedUserId = Task.AssignedUserId,
-                CreatorId = Task.CreatorId,
-                Title = Task.Title,
-                ShortDescription = Task.ShortDescription,
-                Description = Task.Description,
-            };
-            TaskDTO.AttachedFiles = await _taskAttachmentService.GetTaskAttachmentsByTaskId(TaskDTO.Id);
-
-            return TaskDTO;
-        }
-
-        public async Task<string> AddTask(TaskDTO TaskDTO)
-        {
-            if (TaskDTO == null)
-                throw new Exception("Task is null!");
-
-            if (TaskDTO.AssignedUserId == null)
-                throw new Exception("Task assigned user Id is null!");
-
-            if (TaskDTO.CreatorId == null)
-                throw new Exception("Task creator Id is null!");
-
-            if (TaskDTO.Title == null)
-                throw new Exception("Task title is null!");
-
-            var Task = new Infrastructure.Models.Task
-            {
-                AssignedUserId = TaskDTO.AssignedUserId,
-                CreatorId = TaskDTO.CreatorId,
-                Title = TaskDTO.Title,
-                ShortDescription = TaskDTO.ShortDescription,
-                Description = TaskDTO.Description,
-            };
-
-            int taskId = await _taskRepository.AddTaskAsync(Task);
-
-            if (TaskDTO.AttachedFiles != null)
-            {
-                foreach (var AttachedFile in TaskDTO.AttachedFiles)
-                {
-                    AttachedFile.TaskId = taskId;
-                    await _taskAttachmentService.AddTaskAttachment(AttachedFile);
-                }
+                return response;
             }
-
-            return "Successful addition!";
-        }
-
-        public async Task<string> UpdateTask(TaskDTO TaskDTO)
-        {
-            if (TaskDTO == null)
-                throw new AppException("Task is null!");
-
-            var Task = await _taskRepository.GetTaskByIdAsync(TaskDTO.Id);
-
-            if (Task == null)
-                throw new AppException("Task not found!");
-
-            if (Task.AssignedUserId != TaskDTO.AssignedUserId)
-                Task.AssignedUserId = TaskDTO.AssignedUserId;
-
-            if (Task.Title != TaskDTO.Title)
-                Task.Title = TaskDTO.Title;
-
-            if (TaskDTO.ShortDescription != null)
-                Task.ShortDescription = TaskDTO.ShortDescription;
-
-            if (TaskDTO.Description != null)
-                Task.Description = TaskDTO.Description;
-
-            if (TaskDTO.AttachedFiles != null)
+            catch (Exception ex)
             {
-                await _taskAttachmentService.DeleteTaskAttachmentsByTaskId(TaskDTO.Id);
+                response.ResponseMessage.StatusCode = HttpStatusCode.InternalServerError;
+                response.Message = ex.Message;
 
-                foreach (var file in TaskDTO.AttachedFiles)
-                {
-                    file.TaskId = TaskDTO.Id;
-                    await _taskAttachmentService.AddTaskAttachment(file);
-                }
+                return response;
             }
-
-            await _taskRepository.UpdateTaskAsync(Task);
-
-            return "Successful update!";
         }
 
-        public async Task<string> DeleteTask(int id)
+        public async Task<Response> AddTask(TaskDTO TaskDTO)
         {
-            await _taskRepository.DeleteTaskAsync(id);
+            var response = new Response();
+            try
+            {
+                if (TaskDTO == null)
+                {
+                    response.ResponseMessage.StatusCode = HttpStatusCode.BadRequest;
+                    response.Message = "Task is Required!";
 
-            return "Successful deletion!";
+                    return response;
+                }
+
+                if (TaskDTO.CreatorId == null)
+                {
+                    response.ResponseMessage.StatusCode = HttpStatusCode.BadRequest;
+                    response.Message = "Task Creator Id is Required!";
+
+                    return response;
+                }
+
+                var creatorInDb = (await _userService.GetUserById(TaskDTO.CreatorId)).User;
+                if (creatorInDb == null)
+                {
+                    response.ResponseMessage.StatusCode = HttpStatusCode.NotFound;
+                    response.Message = "Task Creator Not Found!";
+
+                    return response;
+                }
+
+                if (TaskDTO.AssignedUserId == null)
+                {
+                    response.ResponseMessage.StatusCode = HttpStatusCode.BadRequest;
+                    response.Message = "Task Assigned User is Required!";
+
+                    return response;
+                }
+
+                var assignedUserInDb = (await _userService.GetUserById(TaskDTO.AssignedUserId)).User;
+                if (assignedUserInDb == null)
+                {
+                    response.ResponseMessage.StatusCode = HttpStatusCode.NotFound;
+                    response.Message = "Task Assigned User Not Found!";
+
+                    return response;
+                }
+
+                if (TaskDTO.CreatorId == TaskDTO.AssignedUserId)
+                {
+                    response.ResponseMessage.StatusCode = HttpStatusCode.BadRequest;
+                    response.Message = "Task Creator and Assigned User can not be the Same!";
+
+                    return response;
+                }
+
+                if (TaskDTO.Title == null)
+                {
+                    response.ResponseMessage.StatusCode = HttpStatusCode.BadRequest;
+                    response.Message = "Task Title is Required!";
+
+                    return response;
+                }
+
+                var Task = new Infrastructure.Models.Task
+                {
+                    CreatorId = TaskDTO.CreatorId,
+                    AssignedUserId = TaskDTO.AssignedUserId,
+                    Title = TaskDTO.Title,
+                    ShortDescription = TaskDTO.ShortDescription,
+                    Description = TaskDTO.Description,
+                };
+
+                int taskId = await _taskRepository.AddTaskAsync(Task);
+
+                if (TaskDTO.AttachedFiles != null)
+                {
+                    foreach (var AttachedFile in TaskDTO.AttachedFiles)
+                    {
+                        AttachedFile.TaskId = taskId;
+                        await _taskAttachmentService.AddTaskAttachment(AttachedFile);
+                    }
+                }
+
+                response.ResponseMessage.StatusCode = HttpStatusCode.OK;
+                response.Message = "Successful Addition!";
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.ResponseMessage.StatusCode = HttpStatusCode.InternalServerError;
+                response.Message = ex.Message;
+
+                return response;
+            }
+        }
+
+        public async Task<Response> UpdateTask(TaskDTO TaskDTO)
+        {
+            var response = new Response();
+            var taskRequest = new Infrastructure.Models.Task();
+            taskRequest.Id = TaskDTO.Id;
+
+            try
+            {
+                if (TaskDTO == null)
+                {
+                    response.ResponseMessage.StatusCode = HttpStatusCode.BadRequest;
+                    response.Message = "Task is null!";
+
+                    return response;
+                }
+
+                var Task = await _taskRepository.GetTaskByIdAsync(TaskDTO.Id);
+                if (Task == null)
+                {
+                    response.ResponseMessage.StatusCode = HttpStatusCode.NotFound;
+                    response.Message = "Task Not Found!";
+
+                    return response;
+                }
+
+                if (TaskDTO.CreatorId != null)
+                {
+                    if (Task.CreatorId != TaskDTO.CreatorId)
+                    {
+                        var creatorInDb = (await _userService.GetUserById(TaskDTO.CreatorId)).User;
+                        if (creatorInDb == null)
+                        {
+                            response.ResponseMessage.StatusCode = HttpStatusCode.NotFound;
+                            response.Message = "Task Creator Not Found!";
+
+                            return response;
+                        }
+
+                        taskRequest.CreatorId = TaskDTO.CreatorId;
+                    }
+                }
+
+                if (TaskDTO.AssignedUserId != null)
+                {
+                    if (Task.AssignedUserId != TaskDTO.AssignedUserId)
+                    {
+                        var assignedUserInDb = (await _userService.GetUserById(TaskDTO.AssignedUserId)).User;
+                        if (assignedUserInDb == null)
+                        {
+                            response.ResponseMessage.StatusCode = HttpStatusCode.NotFound;
+                            response.Message = "Task Assigned User Not Found!";
+
+                            return response;
+                        }
+
+                        taskRequest.AssignedUserId = TaskDTO.AssignedUserId;
+                    }
+                }
+
+                if (TaskDTO.CreatorId == TaskDTO.AssignedUserId)
+                {
+                    response.ResponseMessage.StatusCode = HttpStatusCode.BadRequest;
+                    response.Message = "Task Creator and Assigned User can not be the Same!";
+
+                    return response;
+                }
+
+                if (!string.IsNullOrWhiteSpace(TaskDTO.Title) && Task.Title != TaskDTO.Title)
+                    taskRequest.Title = TaskDTO.Title;
+
+                if (!string.IsNullOrWhiteSpace(TaskDTO.ShortDescription) && Task.ShortDescription != TaskDTO.ShortDescription)
+                    taskRequest.ShortDescription = TaskDTO.ShortDescription;
+
+                if (!string.IsNullOrWhiteSpace(TaskDTO.Description) && Task.Description != TaskDTO.Description)
+                    taskRequest.Description = TaskDTO.Description;
+
+                if (TaskDTO.AttachedFiles != null)
+                {
+                    await _taskAttachmentService.DeleteTaskAttachmentsByTaskId(TaskDTO.Id);
+
+                    foreach (var file in TaskDTO.AttachedFiles)
+                    {
+                        file.TaskId = TaskDTO.Id;
+                        await _taskAttachmentService.AddTaskAttachment(file);
+                    }
+                }
+
+                await _taskRepository.UpdateTaskAsync(taskRequest);
+
+                response.ResponseMessage.StatusCode = HttpStatusCode.OK;
+                response.Message = "Successful Update!";
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.ResponseMessage.StatusCode = HttpStatusCode.InternalServerError;
+                response.Message = ex.Message;
+
+                return response;
+            }
+        }
+
+        public async Task<Response> DeleteTask(int id)
+        {
+            var response = new Response();
+            try
+            {
+                var Task = await _taskRepository.GetTaskByIdAsync(id);
+
+                if (Task == null)
+                {
+                    response.ResponseMessage.StatusCode = HttpStatusCode.NotFound;
+                    response.Message = "Task Not Found!";
+
+                    return response;
+                }
+
+                await _taskRepository.DeleteTaskAsync(Task);
+
+                response.ResponseMessage.StatusCode = HttpStatusCode.OK;
+                response.Message = "Successful Deletion!";
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.ResponseMessage.StatusCode = HttpStatusCode.InternalServerError;
+                response.Message = ex.Message;
+
+                return response;
+            }
         }
     }
 }

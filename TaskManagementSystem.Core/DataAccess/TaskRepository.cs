@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using TaskManagementSystem.Core.Common;
 using TaskManagementSystem.Core.Interfaces;
 using TaskManagementSystem.Infrastructure;
+using TaskManagementSystem.Infrastructure.Models;
 using Task = System.Threading.Tasks.Task;
 
 namespace TaskManagementSystem.Core.DataAccess
@@ -22,46 +23,73 @@ namespace TaskManagementSystem.Core.DataAccess
 
         public async Task<List<Infrastructure.Models.Task>> GetTasksAsync()
         {
-            return await _context.Tasks.ToListAsync();
+            try
+            {
+                return await _context.Tasks.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<Infrastructure.Models.Task> GetTaskByIdAsync(int id)
         {
-            var Task = await _context.Tasks.FirstOrDefaultAsync(t => t.Id == id);
-
-            if (Task == null)
+            try
             {
-                throw new NotFoundException($"Task with ID '{id}' not found.");
-            }
+                var Task = await _context.Tasks.FirstOrDefaultAsync(t => t.Id == id);
 
-            return Task;
+                return Task;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<int> AddTaskAsync(Infrastructure.Models.Task Task)
         {
-            await _context.Tasks.AddAsync(Task);
-            await _context.SaveChangesAsync();
-
-            return Task.Id;
-        }
-
-        public async Task UpdateTaskAsync(Infrastructure.Models.Task Task)
-        {
-            _context.Entry(Task).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task DeleteTaskAsync(int id)
-        {
-            var Task = await _context.Tasks.FindAsync(id);
-
-            if (Task == null)
+            try
             {
-                throw new NotFoundException($"Task with ID '{id}' not found.");
-            }
+                await _context.Tasks.AddAsync(Task);
+                await _context.SaveChangesAsync();
 
-            _context.Tasks.Remove(Task);
-            await _context.SaveChangesAsync();
+                return Task.Id;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> UpdateTaskAsync(Infrastructure.Models.Task Task)
+        {
+            try
+            {
+                _context.Entry(Task).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+
+                return Task.Id;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> DeleteTaskAsync(Infrastructure.Models.Task Task)
+        {
+            try
+            {
+                _context.Tasks.Remove(Task);
+                await _context.SaveChangesAsync();
+
+                return Task.Id;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

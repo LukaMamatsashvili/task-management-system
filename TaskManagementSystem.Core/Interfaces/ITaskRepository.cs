@@ -12,7 +12,7 @@ namespace TaskManagementSystem.Core.Interfaces
         Task<List<Infrastructure.Models.Task>> GetTasksAsync();
         Task<Infrastructure.Models.Task> GetTaskByIdAsync(int id);
         Task<int> AddTaskAsync(Infrastructure.Models.Task Task);
-        Task UpdateTaskAsync(Infrastructure.Models.Task Task);
-        Task DeleteTaskAsync(int id);
+        Task<int> UpdateTaskAsync(Infrastructure.Models.Task Task);
+        Task<int> DeleteTaskAsync(Infrastructure.Models.Task Task);
     }
 }
