@@ -17,6 +17,7 @@ namespace TaskManagementSystem.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [AllowAnonymous]
     public class UserAuthorizationController : ControllerBase
     {
 

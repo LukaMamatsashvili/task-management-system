@@ -32,9 +32,7 @@ namespace TaskManagementSystem.Infrastructure
         }
 
         public DbSet<UserRole> UserRoles { get; set; }
-        public DbSet<Permission> Permissions { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<UserPermissionLink> UserPermissionLinks { get; set; }
         public DbSet<Task> Tasks { get; set; }
         public DbSet<TaskAttachment> TaskAttachments { get; set; }
     }

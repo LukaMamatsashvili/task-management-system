@@ -16,16 +16,11 @@ namespace TaskManagementSystem.Core.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IUserRoleService _userRoleService;
-        private readonly IUserPermissionLinkRepository _userPermissionLinkRepository;
-        private readonly IPermissionService _permissionService;
 
-        public UserService(IUserRepository userRepository, IUserRoleService userRoleService, 
-            IUserPermissionLinkRepository userPermissionLinkRepository, IPermissionService permissionService)
+        public UserService(IUserRepository userRepository, IUserRoleService userRoleService)
         {
             _userRepository = userRepository;
             _userRoleService = userRoleService;
-            _userPermissionLinkRepository = userPermissionLinkRepository;
-            _permissionService = permissionService;
         }
 
         public async Task<List<UserDTO>> GetUsers()
@@ -44,9 +39,7 @@ namespace TaskManagementSystem.Core.Services
                     Id = user.Id,
                     UserRole = await _userRoleService.GetUserRoleById(user.Id),
                     Username = user.Username,
-                    //Password = 
                 };
-                userDTO.Permissions = await GetPermissionsByUserId(user.Id);
 
                 userDTOs.Add(userDTO);
             }
@@ -67,7 +60,6 @@ namespace TaskManagementSystem.Core.Services
                 UserRole = await _userRoleService.GetUserRoleById(User.Id),
                 Username = User.Username,
             };
-            UserDTO.Permissions = await GetPermissionsByUserId(User.Id);
 
             return UserDTO;
         }
@@ -85,31 +77,8 @@ namespace TaskManagementSystem.Core.Services
                 UserRole = await _userRoleService.GetUserRoleById(User.Id),
                 Username = User.Username,
             };
-            UserDTO.Permissions = await GetPermissionsByUserId(User.Id);
 
             return UserDTO;
-        }
-
-        private async Task<List<PermissionDTO>> GetPermissionsByUserId(int userId)
-        {
-            var userPermissionLinks = await _userPermissionLinkRepository.GetUserPermissionLinksByUserIdAsync(userId);
-
-            var PermissionDTOs = new List<PermissionDTO>();
-
-            if (userPermissionLinks == null || userPermissionLinks?.Count == 0)
-                return PermissionDTOs;
-
-            foreach (var userPermissionLink in userPermissionLinks)
-            {
-                var PermissionDTO = await _permissionService.GetPermissionById(userPermissionLink.PermissionId);
-
-                if (PermissionDTO == null)
-                    continue;
-
-                PermissionDTOs.Add(PermissionDTO);
-            }
-
-            return PermissionDTOs;
         }
 
         public async Task<string> AddUser(UserDTO UserDTO)
@@ -134,18 +103,6 @@ namespace TaskManagementSystem.Core.Services
                 UserRoleId = UserDTO.UserRole.Id,
                 Username = UserDTO.Username,
             };
-
-            if (UserDTO.Permissions != null && UserDTO.Permissions?.Count != 0)
-            {
-                foreach (var Permission in UserDTO.Permissions)
-                {
-                    await _userPermissionLinkRepository.AddUserPermissionLinkAsync(new UserPermissionLink
-                    {
-                        UserId = UserDTO.Id,
-                        PermissionId = Permission.Id,
-                    });
-                }
-            }
 
             byte[] passwordHash, passwordSalt;
             CreatePasswordHash(UserDTO.Password, out passwordHash, out passwordSalt);
@@ -189,20 +146,6 @@ namespace TaskManagementSystem.Core.Services
 
                 User.PasswordHash = passwordHash;
                 User.PasswordSalt = passwordSalt;
-            }
-
-            if (UserDTO.Permissions != null)
-            {
-                await _userPermissionLinkRepository.DeleteUserPermissionLinksByUserId(User.Id);
-
-                foreach (var Permission in UserDTO.Permissions)
-                {
-                    await _userPermissionLinkRepository.AddUserPermissionLinkAsync(new UserPermissionLink
-                    {
-                        UserId = User.Id,
-                        PermissionId = Permission.Id,
-                    });
-                }
             }
 
             await _userRepository.UpdateUserAsync(User);

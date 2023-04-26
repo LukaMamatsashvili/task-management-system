@@ -17,17 +17,14 @@ namespace TaskManagementSystem.Shared.Extension
     {
         public static void AddRepositories(this IServiceCollection services)
         {
-            services.AddScoped<IPermissionRepository, PermissionRepository>();
             services.AddScoped<ITaskAttachmentRepository, TaskAttachmentRepository>();
             services.AddScoped<ITaskRepository, TaskRepository>();
-            services.AddScoped<IUserPermissionLinkRepository, UserPermissionLinkRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserRoleRepository, UserRoleRepository>();
         }
 
         public static void AddServices(this IServiceCollection services)
         {
-            services.AddScoped<IPermissionService, PermissionService>();
             services.AddScoped<ITaskAttachmentService, TaskAttachmentService>();
             services.AddScoped<ITaskService, TaskService>();
             services.AddScoped<IUserAuthorizationService, UserAuthorizationService>();
@@ -41,4 +38,4 @@ namespace TaskManagementSystem.Shared.Extension
             services.Configure<ConnectionStrings>(configuration.GetSection("ConnectionStrings"));
         }
     }
-}
+}   

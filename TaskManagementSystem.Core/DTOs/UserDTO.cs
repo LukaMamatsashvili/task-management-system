@@ -10,6 +10,5 @@ namespace TaskManagementSystem.Core.DTOs
         public string Username { get; set; }
         [MaxLength(20)]
         public string Password { get; set; }
-        public List<PermissionDTO>? Permissions { get; set; }
     }
 }
