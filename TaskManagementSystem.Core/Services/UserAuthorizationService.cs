@@ -61,9 +61,8 @@ namespace TaskManagementSystem.Core.Services
                 throw new AppException("Token is empty");
 
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            _httpClient.DefaultRequestHeaders.Add("token", token);
 
-            var result = "Bearer " + token;
+            var result = token;
 
             return result;
         }
@@ -79,21 +78,24 @@ namespace TaskManagementSystem.Core.Services
 
             var userRole = (await _userRoleService.GetUserRoleById(User.UserRoleId)).Type;
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_configuration["Jwt:SecretToken"]);
-            var tokenDescriptor = new SecurityTokenDescriptor
+            List<Claim> claims = new List<Claim>
             {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                new Claim(ClaimTypes.Name, User.Username),
+                new Claim(ClaimTypes.Name, username),
                 new Claim(ClaimTypes.Role, userRole)
-                }),
-                Expires = DateTime.UtcNow.AddDays(1),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration["Jwt:SecretToken"]));
+
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+            var token = new JwtSecurityToken(
+                claims: claims,
+                expires: DateTime.Now.AddDays(1),
+                signingCredentials: creds);
+
+            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+
+            return jwt;
         }
 
         private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
