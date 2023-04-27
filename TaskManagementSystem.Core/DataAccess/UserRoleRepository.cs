@@ -80,7 +80,7 @@ namespace TaskManagementSystem.Core.DataAccess
         {
             try
             {
-                _context.Entry(UserRole).State = EntityState.Modified;
+                (await _context.UserRoles.FirstOrDefaultAsync(ur => ur.Id == UserRole.Id)).Type = UserRole.Type;
                 await _context.SaveChangesAsync();
 
                 return UserRole.Id;

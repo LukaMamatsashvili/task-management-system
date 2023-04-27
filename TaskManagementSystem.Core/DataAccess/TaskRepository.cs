@@ -66,7 +66,14 @@ namespace TaskManagementSystem.Core.DataAccess
         {
             try
             {
-                _context.Entry(Task).State = EntityState.Modified;
+                var task = (await _context.Tasks.FirstOrDefaultAsync(task => task.Id == Task.Id));
+
+                task.AssignedUserId = Task.AssignedUserId > 0 ? Task.AssignedUserId : task.AssignedUserId;
+                task.CreatorId = Task.CreatorId > 0 ? Task.CreatorId : task.CreatorId;
+                task.Title = !string.IsNullOrEmpty(Task.Title) ? Task.Title : task.Title;
+                task.ShortDescription = !string.IsNullOrEmpty(Task.ShortDescription) ? Task.ShortDescription : task.ShortDescription;
+                task.Description = !string.IsNullOrEmpty(Task.Description) ? Task.Description : task.Description;
+
                 await _context.SaveChangesAsync();
 
                 return Task.Id;

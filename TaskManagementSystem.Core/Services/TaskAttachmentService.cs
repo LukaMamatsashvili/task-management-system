@@ -163,7 +163,7 @@ namespace TaskManagementSystem.Core.Services
                     return response;
                 }
 
-                var taskInDb = await _taskRepository.GetTaskByIdAsync(TaskAttachmentDTO.TaskId);
+                var taskInDb = await _taskRepository.GetTaskByIdAsync((int)TaskAttachmentDTO.TaskId);
                 if (taskInDb == null)
                 {
                     response.ResponseMessage.StatusCode = HttpStatusCode.NotFound;
@@ -190,7 +190,7 @@ namespace TaskManagementSystem.Core.Services
 
                 var TaskAttachment = new TaskAttachment
                 {
-                    TaskId = TaskAttachmentDTO.TaskId,
+                    TaskId = (int)TaskAttachmentDTO.TaskId,
                     FileName = TaskAttachmentDTO.FileName,
                     ContentType = TaskAttachmentDTO.ContentType,
                     FileData = TaskAttachmentDTO.FileData,
@@ -240,9 +240,9 @@ namespace TaskManagementSystem.Core.Services
 
                 if (TaskAttachmentDTO.TaskId != null)
                 {
-                    if (TaskAttachment.TaskId != TaskAttachmentDTO.TaskId)
+                    if (TaskAttachmentDTO.TaskId > 0 && TaskAttachment.TaskId != TaskAttachmentDTO.TaskId)
                     {
-                        var taskInDb = await _taskRepository.GetTaskByIdAsync(TaskAttachmentDTO.TaskId);
+                        var taskInDb = await _taskRepository.GetTaskByIdAsync((int)TaskAttachmentDTO.TaskId);
                         if (taskInDb == null)
                         {
                             response.ResponseMessage.StatusCode = HttpStatusCode.NotFound;
@@ -251,7 +251,7 @@ namespace TaskManagementSystem.Core.Services
                             return response;
                         }
 
-                        taskAttachmentRequest.TaskId = TaskAttachmentDTO.TaskId;
+                        taskAttachmentRequest.TaskId = (int)TaskAttachmentDTO.TaskId;
                     }
                 }
 

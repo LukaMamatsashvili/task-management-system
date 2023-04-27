@@ -6,6 +6,6 @@ namespace TaskManagementSystem.Core.DTOs
     {
         public int Id { get; set; }
         [MaxLength(50)]
-        public string Type { get; set; }
+        public string? Type { get; set; }
     }
 }

@@ -134,7 +134,7 @@ namespace TaskManagementSystem.Core.Services
                     return response;
                 }
 
-                var creatorInDb = (await _userService.GetUserById(TaskDTO.CreatorId)).User;
+                var creatorInDb = (await _userService.GetUserById((int)TaskDTO.CreatorId)).User;
                 if (creatorInDb == null)
                 {
                     response.ResponseMessage.StatusCode = HttpStatusCode.NotFound;
@@ -151,7 +151,7 @@ namespace TaskManagementSystem.Core.Services
                     return response;
                 }
 
-                var assignedUserInDb = (await _userService.GetUserById(TaskDTO.AssignedUserId)).User;
+                var assignedUserInDb = (await _userService.GetUserById((int)TaskDTO.AssignedUserId)).User;
                 if (assignedUserInDb == null)
                 {
                     response.ResponseMessage.StatusCode = HttpStatusCode.NotFound;
@@ -178,8 +178,8 @@ namespace TaskManagementSystem.Core.Services
 
                 var Task = new Infrastructure.Models.Task
                 {
-                    CreatorId = TaskDTO.CreatorId,
-                    AssignedUserId = TaskDTO.AssignedUserId,
+                    CreatorId = (int)TaskDTO.CreatorId,
+                    AssignedUserId = (int)TaskDTO.AssignedUserId,
                     Title = TaskDTO.Title,
                     ShortDescription = TaskDTO.ShortDescription,
                     Description = TaskDTO.Description,
@@ -235,28 +235,11 @@ namespace TaskManagementSystem.Core.Services
                     return response;
                 }
 
-                if (TaskDTO.CreatorId != null)
-                {
-                    if (Task.CreatorId != TaskDTO.CreatorId)
-                    {
-                        var creatorInDb = (await _userService.GetUserById(TaskDTO.CreatorId)).User;
-                        if (creatorInDb == null)
-                        {
-                            response.ResponseMessage.StatusCode = HttpStatusCode.NotFound;
-                            response.Message = "Task Creator Not Found!";
-
-                            return response;
-                        }
-
-                        taskRequest.CreatorId = TaskDTO.CreatorId;
-                    }
-                }
-
                 if (TaskDTO.AssignedUserId != null)
                 {
-                    if (Task.AssignedUserId != TaskDTO.AssignedUserId)
+                    if (TaskDTO.AssignedUserId > 0 && Task.AssignedUserId != TaskDTO.AssignedUserId)
                     {
-                        var assignedUserInDb = (await _userService.GetUserById(TaskDTO.AssignedUserId)).User;
+                        var assignedUserInDb = (await _userService.GetUserById((int)TaskDTO.AssignedUserId)).User;
                         if (assignedUserInDb == null)
                         {
                             response.ResponseMessage.StatusCode = HttpStatusCode.NotFound;
@@ -265,11 +248,11 @@ namespace TaskManagementSystem.Core.Services
                             return response;
                         }
 
-                        taskRequest.AssignedUserId = TaskDTO.AssignedUserId;
+                        taskRequest.AssignedUserId = (int)TaskDTO.AssignedUserId;
                     }
                 }
 
-                if (TaskDTO.CreatorId == TaskDTO.AssignedUserId)
+                if (Task.CreatorId == TaskDTO.AssignedUserId)
                 {
                     response.ResponseMessage.StatusCode = HttpStatusCode.BadRequest;
                     response.Message = "Task Creator and Assigned User can not be the Same!";
@@ -329,6 +312,7 @@ namespace TaskManagementSystem.Core.Services
                 }
 
                 await _taskRepository.DeleteTaskAsync(Task);
+                await _taskAttachmentService.DeleteTaskAttachmentsByTaskId(id);
 
                 response.ResponseMessage.StatusCode = HttpStatusCode.OK;
                 response.Message = "Successful Deletion!";

@@ -246,15 +246,18 @@ namespace TaskManagementSystem.Core.Services
                         return response;
                     }
 
-                    var userRoleInDb = (await _userRoleService.GetUserRoleById(UserDTO.UserRole.Id)).UserRole;
-                    if (userRoleInDb == null)
+                    if (UserDTO.UserRole.Id > 0)
                     {
-                        response.ResponseMessage.StatusCode = HttpStatusCode.NotFound;
-                        response.Message = "User Role Not Found!";
+                        var userRoleInDb = (await _userRoleService.GetUserRoleById(UserDTO.UserRole.Id)).UserRole;
+                        if (userRoleInDb == null)
+                        {
+                            response.ResponseMessage.StatusCode = HttpStatusCode.NotFound;
+                            response.Message = "User Role Not Found!";
 
-                        return response;
+                            return response;
+                        }
+                        userRequest.UserRoleId = UserDTO.UserRole.Id;
                     }
-                    userRequest.UserRoleId = UserDTO.UserRole.Id;
                 }
 
                 if (!string.IsNullOrWhiteSpace(UserDTO.Username) && UserDTO.Username != User.Username)

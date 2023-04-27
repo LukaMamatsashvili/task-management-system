@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -80,7 +81,13 @@ namespace TaskManagementSystem.Core.DataAccess
         {
             try
             {
-                _context.Entry(User).State = EntityState.Modified;
+                var user = (await _context.Users.FirstOrDefaultAsync(user => user.Id == User.Id));
+
+                user.UserRoleId = User.UserRoleId > 0 ? User.UserRoleId : user.UserRoleId;
+                user.Username = !string.IsNullOrEmpty(User.Username) ? User.Username : user.Username;
+                user.PasswordHash = User.PasswordHash != null ? User.PasswordHash : user.PasswordHash;
+                user.PasswordSalt = User.PasswordSalt != null ? User.PasswordSalt : user.PasswordSalt;
+
                 await _context.SaveChangesAsync();
 
                 return User.Id;

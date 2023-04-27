@@ -5,10 +5,10 @@ namespace TaskManagementSystem.Core.DTOs
     public class UserDTO
     {
         public int Id { get; set; }
-        public UserRoleDTO UserRole { get; set; }
+        public UserRoleDTO? UserRole { get; set; }
         [MaxLength(20)]
-        public string Username { get; set; }
+        public string? Username { get; set; }
         [MaxLength(20)]
-        public string Password { get; set; }
+        public string? Password { get; set; }
     }
 }

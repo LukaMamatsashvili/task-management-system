@@ -25,7 +25,7 @@ namespace TaskManagementSystem.Api.Controllers
             return response;
         }
 
-        [HttpGet("taskid/{taskid}")]
+        [HttpGet("taskId/{taskId}")]
         public async Task<TaskAttachmentsResponse> GetTaskAttachmentsByTaskId(int taskId)
         {
             var response = await _TaskAttachmentService.GetTaskAttachmentsByTaskId(taskId);
@@ -65,7 +65,7 @@ namespace TaskManagementSystem.Api.Controllers
             return response;
         }
 
-        [HttpDelete("taskid/{taskid}")]
+        [HttpDelete("taskId/{taskId}")]
         public async Task<Response> DeleteTaskAttachmentsByTaskId(int taskId)
         {
             var response = await _TaskAttachmentService.DeleteTaskAttachmentsByTaskId(taskId);

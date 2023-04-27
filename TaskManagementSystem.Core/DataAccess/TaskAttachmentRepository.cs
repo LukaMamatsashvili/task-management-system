@@ -78,7 +78,13 @@ namespace TaskManagementSystem.Core.DataAccess
         {
             try
             {
-                _context.Entry(TaskAttachment).State = EntityState.Modified;
+                var taskAttachment = (await _context.TaskAttachments.FirstOrDefaultAsync(taskAttachment => taskAttachment.Id == TaskAttachment.Id));
+
+                taskAttachment.TaskId = TaskAttachment.TaskId > 0 ? TaskAttachment.TaskId : taskAttachment.TaskId;
+                taskAttachment.FileName = !string.IsNullOrEmpty(TaskAttachment.FileName) ? TaskAttachment.FileName : taskAttachment.FileName;
+                taskAttachment.ContentType = !string.IsNullOrEmpty(TaskAttachment.ContentType) ? TaskAttachment.ContentType : taskAttachment.ContentType;
+                taskAttachment.FileData = TaskAttachment.FileData != null ? TaskAttachment.FileData : taskAttachment.FileData;
+
                 await _context.SaveChangesAsync();
 
                 return TaskAttachment.Id;

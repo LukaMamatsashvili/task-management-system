@@ -10,7 +10,7 @@ namespace TaskManagementSystem.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(Roles = "admin")]
+    [Authorize(Roles = "Admin")]
     public class UserRoleController : ControllerBase
     {
         private readonly IUserRoleService _userRoleService;
