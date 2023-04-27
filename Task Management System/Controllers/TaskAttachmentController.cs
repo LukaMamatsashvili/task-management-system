@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using TaskManagementSystem.Core.Common;
 using TaskManagementSystem.Core.DTOs;
 using TaskManagementSystem.Core.Interfaces;
@@ -18,6 +20,7 @@ namespace TaskManagementSystem.Api.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin,Manager,Developer")]
         public async Task<TaskAttachmentsResponse> GetTaskAttachments()
         {
             var response = await _TaskAttachmentService.GetTaskAttachments();
@@ -26,6 +29,7 @@ namespace TaskManagementSystem.Api.Controllers
         }
 
         [HttpGet("taskId/{taskId}")]
+        [Authorize(Roles = "Admin,Manager,Developer")]
         public async Task<TaskAttachmentsResponse> GetTaskAttachmentsByTaskId(int taskId)
         {
             var response = await _TaskAttachmentService.GetTaskAttachmentsByTaskId(taskId);
@@ -34,6 +38,7 @@ namespace TaskManagementSystem.Api.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin,Manager,Developer")]
         public async Task<TaskAttachmentResponse> GetTaskAttachmentById(int id)
         {
             var response = await _TaskAttachmentService.GetTaskAttachmentById(id);
@@ -42,6 +47,7 @@ namespace TaskManagementSystem.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<Response> AddTaskAttachment([FromBody] TaskAttachmentDTO TaskAttachmentDTO)
         {
             var response = await _TaskAttachmentService.AddTaskAttachment(TaskAttachmentDTO);
@@ -50,6 +56,7 @@ namespace TaskManagementSystem.Api.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<Response> UpdateTaskAttachment([FromBody] TaskAttachmentDTO updateTaskAttachmentDTO)
         {
             var response = await _TaskAttachmentService.UpdateTaskAttachment(updateTaskAttachmentDTO);
@@ -58,6 +65,7 @@ namespace TaskManagementSystem.Api.Controllers
         }
 
         [HttpDelete("id/{id}")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<Response> DeleteTaskAttachment(int id)
         {
             var response = await _TaskAttachmentService.DeleteTaskAttachment(id);
@@ -66,6 +74,7 @@ namespace TaskManagementSystem.Api.Controllers
         }
 
         [HttpDelete("taskId/{taskId}")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<Response> DeleteTaskAttachmentsByTaskId(int taskId)
         {
             var response = await _TaskAttachmentService.DeleteTaskAttachmentsByTaskId(taskId);

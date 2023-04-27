@@ -79,6 +79,9 @@ namespace TaskManagementSystem.Core.Services
 
                 var tokenResponse = await AuthenticateUser(UserDTO.Username, UserDTO.Password);
 
+                if (tokenResponse.ResponseMessage.StatusCode != HttpStatusCode.OK)
+                    return tokenResponse;
+
                 if (string.IsNullOrEmpty(tokenResponse.Token))
                 {
                     response.ResponseMessage.StatusCode = HttpStatusCode.BadRequest;
@@ -137,6 +140,9 @@ namespace TaskManagementSystem.Core.Services
 
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
             response.Token = jwt;
+
+            response.ResponseMessage.StatusCode = HttpStatusCode.OK;
+            response.Message = "Token Created Successfully!";
 
             return response;
         }

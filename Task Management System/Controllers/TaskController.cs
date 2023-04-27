@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using TaskManagementSystem.Core.Common;
 using TaskManagementSystem.Core.DTOs;
 using TaskManagementSystem.Core.Interfaces;
@@ -18,6 +20,7 @@ namespace TaskManagementSystem.Api.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin,Manager,Developer")]
         public async Task<TasksResponse> GetTasks()
         {
             var response = await _TaskService.GetTasks();
@@ -26,6 +29,7 @@ namespace TaskManagementSystem.Api.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin,Manager,Developer")]
         public async Task<TaskResponse> GetTaskById(int id)
         {
             var response = await _TaskService.GetTaskById(id);
@@ -34,6 +38,7 @@ namespace TaskManagementSystem.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<Response> AddTask([FromBody] TaskDTO TaskDTO)
         {
             var response = await _TaskService.AddTask(TaskDTO);
@@ -42,6 +47,7 @@ namespace TaskManagementSystem.Api.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<Response> UpdateTask([FromBody] TaskDTO updateTaskDTO)
         {
             var response = await _TaskService.UpdateTask(updateTaskDTO);
@@ -50,6 +56,7 @@ namespace TaskManagementSystem.Api.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<Response> DeleteTask(int id)
         {
             var response = await _TaskService.DeleteTask(id);
